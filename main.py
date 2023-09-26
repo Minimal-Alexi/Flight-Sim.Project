@@ -1,5 +1,7 @@
 import mysql
 import pygame
+from InternationalAirportSelection import cli_get_airport_type_from_user
+
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -8,11 +10,17 @@ connection = mysql.connector.connect(
          password='',
          autocommit=True
          )
+
+# Create a cursor for all interactions with the MariaDB Database
+cursor = connection.cursor()
+
 def LocalAirportFetcher():
     return True
-def InternationalAirportFetcher():
-    #for simplicity sake, all large airports are treated as large
-    return True
+
+def InternationalAirportFetcher(cursor):
+    # This function will run a cli menu where the user selects an international airport
+    cli_get_airport_type_from_user(cursor)
+
 # After the algorithm fetches the airports, the player is asked if they want to select to go to one of the airports.
 # If the player says no they get returned to the main menu, otherwise the flight game starts
 def FlightGame():
