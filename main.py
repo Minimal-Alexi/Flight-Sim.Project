@@ -30,6 +30,10 @@ run = True
 while run == True:
     #The program will have to remind the player what airport they are located in:
     #Or if they crashed
-    Print("1 - What local airports are available?")
-    Print("2 - What international airports are available?")
+    print("1 - What local airports are available?")
+    print("2 - What international airports are available?")
     UsInput = int(input("Which choice would you like to pick?"))
+    if UsInput == 1:
+        print("WIP")
+    elif UsInput == 2:
+        InternationalAirportFetcher(cursor)
