@@ -26,6 +26,15 @@ def InternationalAirportFetcher(cursor):
 def FlightGame():
     return True
 
+
+class Player:
+    location
+    CO2_Budget = 10000
+    Fuel = 100
+    Money = 100
+print("1 - Would you like to register a new user?")
+print("2 - Would you like to login as a user?")
+print("3 - Quit")
 run = True
 while run == True:
     #The program will have to remind the player what airport they are located in:
