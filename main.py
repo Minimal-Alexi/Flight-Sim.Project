@@ -76,21 +76,42 @@ def FlightGame():
 
 
 class Player:
-    location = None
+    location = "Placeholder"
     CO2_Budget = 10000
     Fuel = 100
     Money = 100
+    Fuel_Efficiency = 5
+
+run = False
 print("1 - Would you like to register a new user?")
 print("2 - Would you like to login as a user?")
 print("3 - Quit")
-run = True
+UsInput = int(input("Which choice would you like to pick?"))
+if UsInput==1:
+    print("WIP")
+    run = True
+elif UsInput==2:
+    print("WIP")
+    run = True
+else:
+    run = False
 while run == True:
     #The program will have to remind the player what airport they are located in:
     #Or if they crashed
-    print("1 - What local airports are available?")
-    print("2 - What international airports are available?")
+    print("1 - Move to a local airport: ")
+    print("2 - Move to an international airport: ")
+    print("3 - Pick up quests from the airport: ")
+    print("4 - Airport shop: ")
+    print("5 - Log out. ")
     UsInput = int(input("Which choice would you like to pick?"))
     if UsInput == 1:
         print("WIP")
     elif UsInput == 2:
         InternationalAirportFetcher(cursor)
+    elif UsInput == 3:
+        print("WIP")
+    elif UsInput == 4:
+        print("WIP")
+    else:
+        run = False
+print("Bye bye user!")
