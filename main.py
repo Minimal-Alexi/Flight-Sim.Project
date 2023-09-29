@@ -1,14 +1,14 @@
 import mysql.connector
 import pygame
 from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_airport_type_list, get_country_list, get_user_location, set_user_location)
+                      get_airport_type_list, get_country_list, get_user_location, set_user_location, db_query)
 
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
          database='flight_game',
-         user='flight_sim',
-         password='menudb',
+         user='root',
+         password='PmmcMAsmni2004',
          autocommit=True
          )
 
@@ -74,24 +74,49 @@ def InternationalAirportFetcher(cursor, user_id=1):
 def FlightGame():
     return True
 
+def UserReg():
+    return True
+def UserReg(input):
+    sql = f"SELECT max(id) FROM GAME"
+    result = db_query(sql,cursor)
+    if cursor.rowcount == 1:
+        (maxi, ) = result[0]
+    maxi = int(maxi)
+    maxi = maxi + 1
+    sql = f"INSERT INTO GAME (ID,CO2_CONSUMED,CO2_BUDGET,LOCATION,SCREEN_NAME) VALUES ({maxi},0,10000,'EGCC','{input}')"
+    db_query(sql,cursor)
+def UserLog(user, input):
+    sql = f"SELECT CO2_BUDGET,LOCATION,SCREEN_NAME,ID FROM GAME WHERE SCREEN_NAME = '{input}'"
+    result = db_query(sql,cursor)
+    if cursor.rowcount>0:
+        for row in result:
+            print(f"Hello, you are {row[2]}, at airport {row[1]}, with a CO2_budget of {row[0]}")
+    user.location = row[1]
+    user.CO2_Budget = row[0]
+    user.databaseID = row[3]
+
 
 class Player:
+    databaseID = 0
     location = "Placeholder"
     CO2_Budget = 10000
     Fuel = 100
     Money = 100
     Fuel_Efficiency = 5
-
+user = Player
 run = False
 print("1 - Would you like to register a new user?")
 print("2 - Would you like to login as a user?")
 print("3 - Quit")
 UsInput = int(input("Which choice would you like to pick?"))
 if UsInput==1:
-    print("WIP")
+    UsInput = input("Enter in new username: ")
+    UserReg(UsInput)
+    UserLog(user,UsInput)
     run = True
 elif UsInput==2:
-    print("WIP")
+    UsInput = input("Enter in your username: ")
+    UserLog(user, UsInput)
     run = True
 else:
     run = False
