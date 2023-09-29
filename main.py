@@ -7,8 +7,8 @@ connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
          database='flight_game',
-         user='root',
-         password='PmmcMAsmni2004',
+         user='flight_sim',
+         password='menudb',
          autocommit=True
          )
 
@@ -94,8 +94,9 @@ def UserLog(user, input):
     user.location = row[1]
     user.CO2_Budget = row[0]
     user.databaseID = row[3]
-
-
+def Shop(user):
+    
+    return True
 class Player:
     databaseID = 0
     location = "Placeholder"
@@ -136,7 +137,7 @@ while run == True:
     elif UsInput == 3:
         print("WIP")
     elif UsInput == 4:
-        print("WIP")
+        Shop(user)
     else:
         run = False
 print("Bye bye user!")
