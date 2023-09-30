@@ -83,19 +83,24 @@ def UserReg(input):
         (maxi, ) = result[0]
     maxi = int(maxi)
     maxi = maxi + 1
-    sql = f"INSERT INTO GAME (ID,CO2_CONSUMED,CO2_BUDGET,LOCATION,SCREEN_NAME) VALUES ({maxi},0,10000,'EGCC','{input}')"
+    sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY) VALUES ({maxi},100,10000,'EGCC','{input}',100,5)"
     db_query(sql,cursor)
 def UserLog(user, input):
-    sql = f"SELECT CO2_BUDGET,LOCATION,SCREEN_NAME,ID FROM GAME WHERE SCREEN_NAME = '{input}'"
+    sql = f"SELECT CO2_BUDGET,LOCATION,SCREEN_NAME,ID,MONEY,FUEL,FUEL_EFFICIENCY FROM GAME WHERE SCREEN_NAME = '{input}'"
     result = db_query(sql,cursor)
     if cursor.rowcount>0:
         for row in result:
-            print(f"Hello, you are {row[2]}, at airport {row[1]}, with a CO2_budget of {row[0]}")
+            print(f"Hello, you are {row[2]}, at airport {row[1]}, with a CO2_budget of {row[0]}. You have {row[4]}$, very rich :3.")
     user.location = row[1]
     user.CO2_Budget = row[0]
     user.databaseID = row[3]
+    user.Fuel = row[5]
+    user.Money= row[4]
+    user.Fuel_Efficiency = row[6]
 def Shop(user):
-    
+
+    return True
+def EventSystem():
     return True
 class Player:
     databaseID = 0
