@@ -3,7 +3,7 @@ from Shop import shop
 import pygame
 from Database import (get_continent, get_continent_list, get_airport_list,
                       get_airport_type_list, get_country_list, get_user_location, set_user_location, db_query, update_player)
-from more_functions import display_continent_list, display_menu_list, local_airport_fetcher
+from more_functions import display_continent_list, display_menu_list, local_airport_fetcher,display_country_limit_list
 from mainmenu_functions import (UserLog,UserReg,Goodbye)
 connection = mysql.connector.connect(
          host='127.0.0.1',
@@ -46,7 +46,7 @@ def InternationalAirportFetcher(cursor, user_id):
     airport_type_sel = airport_types[selection - 1][0]
 
     # Display available airports
-    display_menu_list(get_airport_list(cursor, country_sel, airport_type_sel))
+    display_country_limit_list(get_airport_list(cursor, country_sel, airport_type_sel),user)
     selection = int(input("Select Airport: "))
 
     airports = get_airport_list(cursor, country_sel, airport_type_sel)
@@ -134,7 +134,7 @@ while run == True:
     elif UsInput == 3:
         print("WIP")
     elif UsInput == 4:
-        if shop(user) == True:
+        if Shop(user) == True:
             print("Purchase successful")
         else:
             print("Purchase failed")

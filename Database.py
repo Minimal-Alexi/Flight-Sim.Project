@@ -1,7 +1,6 @@
 # All MariaDB interactions go here
 
 # takes sql text for query and cursor and returns result of query
-
 def db_query(sql, cursor):
     cursor.execute(sql)
     return cursor.fetchall()
@@ -70,7 +69,7 @@ def get_airport_type_list(cursor, country):
 
 
 def get_airport_list(cursor, country, airport_type):
-    return db_query(f"select airport.name, airport.ident "
+    return db_query(f"select airport.name, airport.ident,airport.LATITUDE_DEG,airport.LONGITUDE_DEG "
                     f"from airport, country "
                     f"where airport.iso_country = country.iso_country "
                     f"and country.name = '{country}' "
