@@ -16,7 +16,7 @@ def display_continent_list(continents):
 
 
 def local_airport_fetcher(cursor, user_id):
-    # This function will run a cli menu where the user selects an international airport
+    # This function will run a cli menu where the user selects an local airport
     location = get_user_location(user_id, cursor)
     print(f"Current location: {location[1]}")
 
