@@ -1,8 +1,10 @@
 import mysql.connector
+from Shop import shop
 import pygame
 from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_airport_type_list, get_country_list, get_user_location, set_user_location)
-
+                      get_airport_type_list, get_country_list, get_user_location, set_user_location, db_query, update_player)
+from more_functions import display_continent_list, display_menu_list, local_airport_fetcher
+from mainmenu_functions import (UserLog,UserReg,Goodbye)
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -15,24 +17,9 @@ connection = mysql.connector.connect(
 # Create a cursor for all interactions with the MariaDB Database
 cursor = connection.cursor()
 
-def LocalAirportFetcher():
-    return True
-
-# Takes a list and displays as numbered menu
-def display_menu_list(disp_list):
-    counter = 1
-    for x in disp_list:
-        print(f"{counter}. {x[0]}")
-        counter += 1
-
-def display_continent_list(continents):
-    counter = 1
-    for x in continents:
-        print(f"{counter}. {get_continent(x[0])}")
-        counter += 1
-
-
-def InternationalAirportFetcher(cursor, user_id=1):
+# After the algorithm fetches the airports, the player is asked if they want to select to go to one of the airports.
+# If the player says no they get returned to the main menu, otherwise the flight game starts
+def InternationalAirportFetcher(cursor, user_id):
     # This function will run a cli menu where the user selects an international airport
     location = get_user_location(user_id, cursor)
     print(f"Current location: {location[1]}")
@@ -68,50 +55,91 @@ def InternationalAirportFetcher(cursor, user_id=1):
     set_user_location(airports[selection - 1][1], user_id, cursor)
 
     print(f"\nLocation updated to {airport_sel}")
+#This function registers the user into the database
+def Shop(user):
+    print(f"Your current balance: {user.Money}$")
+    print(f"Your current CO2 budget: {user.CO2_Budget}")
+    print(f"Your current CO2 budget: {user.Fuel}")
+    Refuel = 100 - user.Fuel
+    #All items have a money and CO2 price
+    items = {
+        "+5km/l Fuel Efficiency": (1000,100),
+        "Refueling Services": (Refuel*10,Refuel*10+500),
+        "Environmental-Friendly Refueling Services": (Refuel * 10 + 500, Refuel * 10),
+        "One-Time Extra Cargo capacity": (200, 250),
+        "One-Time Fuel Drop Tanks": (200, 1000)
+    }
 
-# After the algorithm fetches the airports, the player is asked if they want to select to go to one of the airports.
-# If the player says no they get returned to the main menu, otherwise the flight game starts
-def FlightGame():
+    print("Available items:")
+    for item, price in items.items():
+        #Here we unpack the touples into two different variables.
+        (moneyprice, CO2_price) = price
+        print(f"{item}: {moneyprice}$, {CO2_price} CO2 tokens")
+    selected_item = input("Enter the item you want to purchase: ")
+    if selected_item not in items:
+        print("Invalid item selection.")
+        return False
+    #We do that again.
+    (moneyprice, CO2_price) = items[selected_item]
+    if user.Money < moneyprice:
+        print("You don't have enough money.")
+        return False
+    if user.CO2_Budget < CO2_price:
+        print("Are you sure you want to go into negative CO2 budget?")
+        UsInput = input("Yes/No ")
+        if UsInput == "No":
+            return False
+    user.Money = user.Money - moneyprice
+    user.CO2_Budget = user.CO2_Budget - CO2_price
+    print(f"Purchase of {selected_item} successful. Your new balance: {user.Money}")
+    update_player(cursor,user)
     return True
-
-
 class Player:
+    databaseID = 0
     location = "Placeholder"
     CO2_Budget = 10000
     Fuel = 100
     Money = 100
     Fuel_Efficiency = 5
-
+user = Player
 run = False
 print("1 - Would you like to register a new user?")
 print("2 - Would you like to login as a user?")
 print("3 - Quit")
-UsInput = int(input("Which choice would you like to pick?"))
+UsInput = int(input("Which choice would you like to pick?: "))
 if UsInput==1:
-    print("WIP")
+    UsInput = input("Enter in new username: ")
+    UserReg(UsInput)
+    UserLog(user,UsInput)
     run = True
 elif UsInput==2:
-    print("WIP")
+    UsInput = input("Enter in your username: ")
+    UserLog(user, UsInput)
     run = True
 else:
     run = False
 while run == True:
     #The program will have to remind the player what airport they are located in:
-    #Or if they crashed
-    print("1 - Move to a local airport: ")
-    print("2 - Move to an international airport: ")
-    print("3 - Pick up quests from the airport: ")
-    print("4 - Airport shop: ")
-    print("5 - Log out. ")
-    UsInput = int(input("Which choice would you like to pick?"))
+    print("1 - Move to a local airport ")
+    print("2 - Move to an international airport ")
+    print("3 - Pick up quests from the airport ")
+    print("4 - Airport shop ")
+    print("5 - Player stats ")
+    print("6 - Log out. ")
+    UsInput = int(input("Which choice would you like to pick?: "))
     if UsInput == 1:
-        print("WIP")
+        local_airport_fetcher(cursor,user.databaseID)
     elif UsInput == 2:
-        InternationalAirportFetcher(cursor)
+        InternationalAirportFetcher(cursor,user.databaseID)
     elif UsInput == 3:
         print("WIP")
     elif UsInput == 4:
+        if shop(user) == True:
+            print("Purchase successful")
+        else:
+            print("Purchase failed")
+    elif UsInput == 5:
         print("WIP")
     else:
         run = False
-print("Bye bye user!")
+Goodbye()

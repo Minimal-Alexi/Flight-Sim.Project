@@ -1,6 +1,7 @@
 # All MariaDB interactions go here
 
 # takes sql text for query and cursor and returns result of query
+
 def db_query(sql, cursor):
     cursor.execute(sql)
     return cursor.fetchall()
@@ -23,6 +24,21 @@ def get_user_location(id, cursor):
                     f"from game, airport "
                     f"where game.id= '{id}'"
                     f"and game.location = airport.ident", cursor)[0]
+
+
+# gets user local airport from db
+def get_local_airport(id, cursor):
+    return db_query(f"SELECT NAME "
+                    f"FROM AIRPORT "
+                    f"WHERE ISO_COUNTRY "
+                    f"IN (SELECT ISO_COUNTRY FROM AIRPORT, GAME "
+                    f"WHERE GAME.LOCATION = AIRPORT.IDENT AND GAME.ID = {id})", cursor)
+
+def get_country_from_ident(ident, cursor):
+    return db_query(f"select country.iso_country, country.name "
+                    f"from country, airport "
+                    f"where country.iso_country = airport.iso_country "
+                    f"and airport.ident = '{ident}'", cursor)[0]
 
 
 # takes continent code as a string and returns the full name of the continent
@@ -60,3 +76,7 @@ def get_airport_list(cursor, country, airport_type):
                     f"and country.name = '{country}' "
                     f"and airport.type = '{airport_type}'", cursor)
 
+#This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere.
+def update_player(cursor,user):
+    sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"
+    db_query(sql,cursor)

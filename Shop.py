@@ -1,4 +1,16 @@
-def Shop(user):
+import mysql.connector
+connection = mysql.connector.connect(
+         host='127.0.0.1',
+         port= 3306,
+         database='flight_game',
+         user='flight_sim',
+         password='menudb',
+         autocommit=True
+         )
+
+# Create a cursor for all interactions with the MariaDB Database
+cursor = connection.cursor()
+def shop(user):
     sql = f"SELECT CO2_BUDGET FROM GAME WHERE ID = {user}"
     cursor.execute(sql)
     result = cursor.fetchone()
