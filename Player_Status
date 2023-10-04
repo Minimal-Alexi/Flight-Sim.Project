@@ -1,0 +1,14 @@
+#Player status check
+def player_status(Fuel_Efficiency, Fuel, Money, CO2_Budget):
+    print(f"Current Aircraft Stats:")
+    print(f"Fuel Efficiency: {Fuel_Efficiency} km/gallon")
+    print(f"Fuel: {Fuel} gallons")
+    print(f"Money: ${Money}")
+    print(f"CO2 Budget: {CO2_Budget} tons")
+
+fuel_efficiency = 5.2
+fuel = 100
+money = 10000
+co2_budget = 500
+
+player_status(Fuel_Efficiency, Fuel, Money, CO2_Budget)
