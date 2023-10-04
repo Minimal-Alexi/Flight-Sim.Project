@@ -60,7 +60,3 @@ def get_airport_list(cursor, country, airport_type):
                     f"and country.name = '{country}' "
                     f"and airport.type = '{airport_type}'", cursor)
 
-#This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere.
-def update_player(cursor,user):
-    sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"
-    db_query(sql,cursor)
