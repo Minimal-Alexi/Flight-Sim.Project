@@ -24,12 +24,20 @@ def UserReg(input):
     sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY) VALUES ({maxi},100,10000,'EGCC','{input}',100,5)"
     db_query(sql,cursor)
 #This function logs in hte players data into the python function, so we don't have to constantly call from the DB.
+def getairport(IDENT):
+    name = (db_query(f"SELECT NAME FROM AIRPORT WHERE IDENT = '{IDENT}'",cursor))[0]
+    return name
+def getcountry(name):
+    country = db_query(f"SELECT COUNTRY.NAME FROM AIRPORT,COUNTRY WHERE AIRPORT.NAME = '{name}' AND AIRPORT.ISO_COUNTRY = COUNTRY.ISO_COUNTRY",cursor)[0]
+    return country
 def UserLog(user, input):
     sql = f"SELECT CO2_BUDGET,LOCATION,SCREEN_NAME,ID,MONEY,FUEL,FUEL_EFFICIENCY FROM GAME WHERE SCREEN_NAME = '{input}'"
     result = db_query(sql,cursor)
     if cursor.rowcount>0:
         for row in result:
-            print(f"Hello, you are {row[2]}, at airport {row[1]}, with a CO2_budget of {row[0]}. You have {row[4]}$, very rich :3.")
+            name = getairport(row[1])[0]
+            country = getcountry(name)[0]
+            print(f"Hello, you are {row[2]}, at airport {name} ({country}), with a CO2_budget of {row[0]}. You have {row[4]}$, very rich :3.")
     user.location = row[1]
     user.CO2_Budget = row[0]
     user.databaseID = row[3]
@@ -48,3 +56,10 @@ def Goodbye():
         }
     print(GoodbyeMessage[Randomgoodbye])
 
+def player_status(user):
+    print(f"Current Player Stats:")
+    print(f"Fuel Efficiency: {user.Fuel_Efficiency} km/liters")
+    print(f"Fuel: {user.Fuel} liters")
+    print(f"Money: {user.Money}$")
+    print(f"CO2 Budget: {user.CO2_Budget} credits")
+    stop = input()

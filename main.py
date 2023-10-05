@@ -1,10 +1,9 @@
 import mysql.connector
-from Shop import shop
 import pygame
 from Database import (get_continent, get_continent_list, get_airport_list,
                       get_airport_type_list, get_country_list, get_user_location, set_user_location, db_query, update_player)
 from more_functions import display_continent_list, display_menu_list, local_airport_fetcher,display_country_limit_list
-from mainmenu_functions import (UserLog,UserReg,Goodbye)
+from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,getcountry)
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -55,7 +54,9 @@ def InternationalAirportFetcher(cursor, user_id):
     set_user_location(airports[selection - 1][1], user_id, cursor)
 
     print(f"\nLocation updated to {airport_sel}")
-#This function registers the user into the database
+#These are global variables, they can be edited in any function. This will be important for later.
+BoughtFuelTank = False
+BoughtExtraCash = False
 def Shop(user):
     print(f"Your current balance: {user.Money}$")
     print(f"Your current CO2 budget: {user.CO2_Budget}")
@@ -69,7 +70,6 @@ def Shop(user):
         "One-Time Extra Cargo capacity": (200, 250),
         "One-Time Fuel Drop Tanks": (200, 1000)
     }
-
     print("Available items:")
     for item, price in items.items():
         #Here we unpack the touples into two different variables.
@@ -81,17 +81,29 @@ def Shop(user):
         return False
     #We do that again.
     (moneyprice, CO2_price) = items[selected_item]
-    if user.Money < moneyprice:
+    quantity = 1;
+    if selected_item == "+5km/l Fuel Efficiency":
+        quantity = int(input("Insert the quantity of the item you want to purchase. (Max fuel efficiency is 20) "))
+        if user.Fuel_Efficiency==20 or quantity*5+user.Fuel_Efficiency>20:
+            return False
+    if user.Money < moneyprice*quantity:
         print("You don't have enough money.")
         return False
-    if user.CO2_Budget < CO2_price:
+    if user.CO2_Budget < CO2_price*quantity:
         print("Are you sure you want to go into negative CO2 budget?")
         UsInput = input("Yes/No ")
         if UsInput == "No":
             return False
-    user.Money = user.Money - moneyprice
-    user.CO2_Budget = user.CO2_Budget - CO2_price
-    print(f"Purchase of {selected_item} successful. Your new balance: {user.Money}")
+    if selected_item == "+5km/l Fuel Efficiency":
+        user.Fuel_Efficiency = user.Fuel_Efficiency+5*quantity
+    elif selected_item == "One-Time Extra Cargo capacity":
+        BoughtExtraCash = True
+    else:
+        BoughtFuelTank = True
+    user.Money = user.Money - moneyprice*quantity
+    user.CO2_Budget = user.CO2_Budget - CO2_price*quantity
+    print(f"Purchase of {selected_item} successful. Your new balance: {user.Money}. You have {user.CO2_Budget} carbon credits left.")
+    stop = input()
     update_player(cursor,user)
     return True
 class Player:
@@ -118,8 +130,11 @@ elif UsInput==2:
     run = True
 else:
     run = False
+move = True
 while run == True:
     #The program will have to remind the player what airport they are located in:
+    if move == False:
+        print(f"You are at {getairport(user.location)[0]} ({getcountry(getairport(user.location)[0])[0]})")
     print("1 - Move to a local airport ")
     print("2 - Move to an international airport ")
     print("3 - Pick up quests from the airport ")
@@ -129,17 +144,24 @@ while run == True:
     UsInput = int(input("Which choice would you like to pick?: "))
     if UsInput == 1:
         local_airport_fetcher(cursor,user.databaseID)
+        move = True
     elif UsInput == 2:
         InternationalAirportFetcher(cursor,user.databaseID)
+        move = True
     elif UsInput == 3:
         print("WIP")
+        move = False
     elif UsInput == 4:
         if Shop(user) == True:
             print("Purchase successful")
+            move = False
         else:
             print("Purchase failed")
+            move = False
+            stop = input()
     elif UsInput == 5:
-        print("WIP")
+        player_status(user)
+        move = False
     else:
         run = False
 Goodbye()
