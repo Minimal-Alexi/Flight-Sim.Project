@@ -1,13 +1,14 @@
 # All MariaDB interactions go here
 from geopy import distance
+
 # takes sql text for query and cursor and returns result of query
 def db_query(sql, cursor):
     cursor.execute(sql)
     return cursor.fetchall()
 
-# sends user location to the db
-def set_user_location(location, id, cursor):
-    cursor.execute(f"update game set location = '{location}' where id = '{id}'")
+# Deprecated: moved to method of Player to keep class and DB in sync
+# def set_user_location(location, id, cursor):
+#     cursor.execute(f"update game set location = '{location}' where id = '{id}'")
 
 
 # gets user location from the db
@@ -32,6 +33,10 @@ def get_country_from_ident(ident, cursor):
                     f"where country.iso_country = airport.iso_country "
                     f"and airport.ident = '{ident}'", cursor)[0]
 
+def get_airport_name_from_ident(ident, cursor):
+    return db_query(f"SELECT name "
+                    f"FROM airport "
+                    f"WHERE ident = '{ident}'", cursor)[0][0]
 
 # takes continent code as a string and returns the full name of the continent
 def get_continent(continent_code):
@@ -52,13 +57,27 @@ def get_continent_list(cursor):
 
 # Takes continent code and returns list of countries in that continent
 def get_country_list(cursor, continent):
-    return db_query(f"select distinct name from country where continent = '{continent}'", cursor)
+    return db_query(f"select distinct country.name "
+                    f"from country, airport "
+                    f"where country.continent = '{continent}'"
+                    f"and country.iso_country = airport.iso_country "
+                    f"and (airport.type = 'medium_airport' or airport.type =  'large airport')", cursor)
 
 
 # Takes country name and returns list of distinct airport types
-def get_airport_type_list(cursor, country):
+def get_intl_airport_type_list(cursor, country):
     return db_query(f"select distinct type "
-                    f"from airport, country where airport.iso_country = country.iso_country and country.name = '{country}' and (type = 'medium_airport' or type = 'large_airport')", cursor)
+                    f"from airport, country "
+                    f"where airport.iso_country = country.iso_country "
+                    f"and country.name = '{country}'"
+                    f"and (type = 'medium_airport' or type = 'large_airport')", cursor)
+
+# Takes country name and returns list of distinct airport types
+def get_local_airport_type_list(cursor, country):
+    return db_query(f"select distinct type "
+                    f"from airport, country "
+                    f"where airport.iso_country = country.iso_country "
+                    f"and country.name = '{country}'", cursor)
 
 def get_airport_list(cursor, country, airport_type):
     return db_query(f"select airport.name, airport.ident,airport.LATITUDE_DEG,airport.LONGITUDE_DEG "

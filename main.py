@@ -1,7 +1,11 @@
 import mysql.connector
+import pygame
+import geopy
 from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_airport_type_list, get_country_list, get_user_location, set_user_location, update_player,get_country_from_ident)
+                      get_country_list, get_user_location, update_player,get_country_from_ident)
 from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser)
+from Player import Player
+
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -22,6 +26,7 @@ def Shop(user):
     print(f"Your current CO2 budget: {user.CO2_Budget}")
     print(f"Your current CO2 budget: {user.Fuel}")
     Refuel = 100 - user.Fuel
+
     #All items have a money and CO2 price
     items = {
         "+5km/l Fuel Efficiency": (1000,100),
@@ -66,14 +71,11 @@ def Shop(user):
     stop = input()
     update_player(cursor,user)
     return True
-class Player:
-    databaseID = 0
-    location = "Placeholder"
-    CO2_Budget = 10000
-    Fuel = 100
-    Money = 100
-    Fuel_Efficiency = 5
-user = Player
+
+
+user = Player()
+
+
 run = False
 print("1 - Would you like to register a new user?")
 print("2 - Would you like to login as a user?")
@@ -106,7 +108,7 @@ while run == True:
     UsInput = int(input("Which choice would you like to pick?: "))
     if UsInput == 1:
         user.Fuel = 100
-        local_airport_fetcher(cursor,user.databaseID,user)
+        local_airport_fetcher(cursor, user.databaseID, user)
         move = True
         update_player(cursor,user)
     elif UsInput == 2:
