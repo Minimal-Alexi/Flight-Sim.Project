@@ -5,13 +5,6 @@ def db_query(sql, cursor):
     cursor.execute(sql)
     return cursor.fetchall()
 
-
-# prints contents of list in new line
-def display_list(print_list):
-    for x in print_list:
-        print(x)
-
-
 # sends user location to the db
 def set_user_location(location, id, cursor):
     cursor.execute(f"update game set location = '{location}' where id = '{id}'")
@@ -79,3 +72,9 @@ def get_airport_list(cursor, country, airport_type):
 def update_player(cursor,user):
     sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"
     db_query(sql,cursor)
+def getairport(IDENT,cursor):
+    name = (db_query(f"SELECT NAME FROM AIRPORT WHERE IDENT = '{IDENT}'",cursor))[0]
+    return name
+def getcountry(cursor,name):
+    country = db_query(f"SELECT COUNTRY.NAME FROM AIRPORT,COUNTRY WHERE AIRPORT.IDENT = '{name}' AND AIRPORT.ISO_COUNTRY = COUNTRY.ISO_COUNTRY",cursor)[0]
+    return country

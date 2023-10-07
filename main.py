@@ -1,9 +1,7 @@
 import mysql.connector
-import pygame
 from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_airport_type_list, get_country_list, get_user_location, set_user_location, db_query, update_player)
-from more_functions import display_continent_list, display_menu_list, local_airport_fetcher,display_country_limit_list
-from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,getcountry)
+                      get_airport_type_list, get_country_list, get_user_location, set_user_location, update_player,get_country_from_ident)
+from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser)
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -16,44 +14,6 @@ connection = mysql.connector.connect(
 # Create a cursor for all interactions with the MariaDB Database
 cursor = connection.cursor()
 
-# After the algorithm fetches the airports, the player is asked if they want to select to go to one of the airports.
-# If the player says no they get returned to the main menu, otherwise the flight game starts
-def InternationalAirportFetcher(cursor, user_id):
-    # This function will run a cli menu where the user selects an international airport
-    location = get_user_location(user_id, cursor)
-    print(f"Current location: {location[1]}")
-
-    # Get continent from user
-    display_continent_list(get_continent_list(cursor))
-    selection = int(input("Select Continent: "))
-
-    continents = get_continent_list(cursor)
-    continent_sel = continents[selection - 1][0]
-
-    # Get country from user
-    display_menu_list(get_country_list(cursor, continent_sel))
-    selection = int(input("Select Country: "))
-
-    countries = get_country_list(cursor, continent_sel)
-    country_sel = countries[selection - 1][0]
-
-    # Get airport_type from user
-    display_menu_list(get_airport_type_list(cursor, country_sel))
-    selection = int(input("Select Airport Type: "))
-
-    airport_types = get_airport_type_list(cursor, country_sel)
-    airport_type_sel = airport_types[selection - 1][0]
-
-    # Display available airports
-    display_country_limit_list(get_airport_list(cursor, country_sel, airport_type_sel),user)
-    selection = int(input("Select Airport: "))
-
-    airports = get_airport_list(cursor, country_sel, airport_type_sel)
-    airport_sel = airports[selection - 1][0]
-
-    set_user_location(airports[selection - 1][1], user_id, cursor)
-
-    print(f"\nLocation updated to {airport_sel}")
 #These are global variables, they can be edited in any function. This will be important for later.
 BoughtFuelTank = False
 BoughtExtraCash = False
@@ -123,7 +83,9 @@ if UsInput==1:
     UsInput = input("Enter in new username: ")
     UserReg(UsInput)
     UserLog(user,UsInput)
-    run = True
+    if NewUser()==True:
+        run = True
+        stop = input("Press any key to continue...")
 elif UsInput==2:
     UsInput = input("Enter in your username: ")
     UserLog(user, UsInput)
@@ -134,7 +96,7 @@ move = True
 while run == True:
     #The program will have to remind the player what airport they are located in:
     if move == False:
-        print(f"You are at {getairport(user.location)[0]} ({getcountry(getairport(user.location)[0])[0]})")
+        print(f"You are at {getairport(user.location)[0]} ({get_country_from_ident(getairport(user.location)[0])[0]})")
     print("1 - Move to a local airport ")
     print("2 - Move to an international airport ")
     print("3 - Pick up quests from the airport ")
@@ -146,7 +108,7 @@ while run == True:
         local_airport_fetcher(cursor,user.databaseID)
         move = True
     elif UsInput == 2:
-        InternationalAirportFetcher(cursor,user.databaseID)
+        InternationalAirportFetcher(cursor,user.databaseID,user)
         move = True
     elif UsInput == 3:
         print("WIP")
@@ -162,6 +124,10 @@ while run == True:
     elif UsInput == 5:
         player_status(user)
         move = False
-    else:
+    elif UsInput == 6:
         run = False
+    else:
+        print("Not available, please try again")
+        stop = input("Press any key to continue...")
+        move = False
 Goodbye()
