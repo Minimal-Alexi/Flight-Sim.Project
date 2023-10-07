@@ -1,2 +1,0 @@
-def victory_screen():
-    print("Congratulations! You've successfully reached Los Angeles International Airport!")
