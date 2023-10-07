@@ -1,7 +1,8 @@
 import mysql.connector
 from display_functions import display_menu_list,display_country_list,display_continent_list
 from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_airport_type_list, get_country_list, get_user_location, set_user_location, update_player,get_country_from_ident,db_query,getcountry)
+                      get_airport_type_list, get_country_list, get_user_location, set_user_location, update_player,get_country_from_ident,db_query,getcountry,getcoordinates)
+from geopy import distance
 from random import randint
 connection = mysql.connector.connect(
          host='127.0.0.1',
@@ -55,7 +56,11 @@ def Goodbye():
             5:"Nooo...but think of all the Californians, they were looking UP to you...well...nevermind, it's probably better if you log out."
         }
     print(GoodbyeMessage[Randomgoodbye])
-
+def distance_limiter(airports,user):
+    counter = 0
+    airports [:] = [x for x in airports if not distance.distance((x[2],x[3]),getcoordinates(cursor,user.location)).km > user.Fuel*user.Fuel_Efficiency]
+def Fuel_Calc(ident,user):
+    user.Fuel=int(user.Fuel-distance.distance(getcoordinates(cursor,ident), getcoordinates(cursor, user.location)).km/user.Fuel_Efficiency)
 def player_status(user):
     print(f"Current Player Stats:")
     print(f"Fuel Efficiency: {user.Fuel_Efficiency} km/liters")
@@ -63,8 +68,7 @@ def player_status(user):
     print(f"Money: {user.Money}$")
     print(f"CO2 Budget: {user.CO2_Budget} credits")
     stop = input()
-
-def local_airport_fetcher(cursor, user_id):
+def local_airport_fetcher(cursor, user_id, user):
     # This function will run a cli menu where the user selects an local airport
     location = get_user_location(user_id, cursor)
     print(f"Current location: {location[1]}")
@@ -80,12 +84,12 @@ def local_airport_fetcher(cursor, user_id):
     airport_type_sel = airport_types[selection - 1][0]
 
     # Display available airports
-    display_menu_list(get_airport_list(cursor, country_rn[1], airport_type_sel))
-    selection = int(input("Select Airport: "))
-
     airports = get_airport_list(cursor, country_rn[1], airport_type_sel)
+    distance_limiter(airports,user)
+    display_menu_list(airports)
+    selection = int(input("Select Airport: "))
     airport_sel = airports[selection - 1][0]
-
+    Fuel_Calc(airports[selection - 1][1], user)
     set_user_location(airports[selection - 1][1], user_id, cursor)
 
     print(f"\nLocation updated to {airport_sel}")
@@ -117,14 +121,13 @@ def InternationalAirportFetcher(cursor, user_id,user):
     airport_type_sel = airport_types[selection - 1][0]
 
     # Display available airports
-    display_country_list(get_airport_list(cursor, country_sel, airport_type_sel),user)
-    selection = int(input("Select Airport: "))
-
     airports = get_airport_list(cursor, country_sel, airport_type_sel)
+    distance_limiter(airports,user)
+    display_menu_list(airports)
+    selection = int(input("Select Airport: "))
     airport_sel = airports[selection - 1][0]
-
+    Fuel_Calc(airports[selection - 1][1], user)
     set_user_location(airports[selection - 1][1], user_id, cursor)
-
     print(f"\nLocation updated to {airport_sel}")
 
 def NewUser():

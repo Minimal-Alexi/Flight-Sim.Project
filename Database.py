@@ -1,5 +1,5 @@
 # All MariaDB interactions go here
-
+from geopy import distance
 # takes sql text for query and cursor and returns result of query
 def db_query(sql, cursor):
     cursor.execute(sql)
@@ -24,7 +24,7 @@ def get_local_airport(id, cursor):
                     f"FROM AIRPORT "
                     f"WHERE ISO_COUNTRY "
                     f"IN (SELECT ISO_COUNTRY FROM AIRPORT, GAME "
-                    f"WHERE GAME.LOCATION = AIRPORT.IDENT AND GAME.ID = {id})", cursor)
+                    f"WHERE GAME.LOCATION = AIRPORT.IDENT AND GAME.ID = {id} AND )", cursor)
 
 def get_country_from_ident(ident, cursor):
     return db_query(f"select country.iso_country, country.name "
@@ -58,8 +58,7 @@ def get_country_list(cursor, continent):
 # Takes country name and returns list of distinct airport types
 def get_airport_type_list(cursor, country):
     return db_query(f"select distinct type "
-                    f"from airport, country where airport.iso_country = country.iso_country and country.name = '{country}'", cursor)
-
+                    f"from airport, country where airport.iso_country = country.iso_country and country.name = '{country}' and (type = 'medium_airport' or type = 'large_airport')", cursor)
 
 def get_airport_list(cursor, country, airport_type):
     return db_query(f"select airport.name, airport.ident,airport.LATITUDE_DEG,airport.LONGITUDE_DEG "
@@ -67,7 +66,6 @@ def get_airport_list(cursor, country, airport_type):
                     f"where airport.iso_country = country.iso_country "
                     f"and country.name = '{country}' "
                     f"and airport.type = '{airport_type}'", cursor)
-
 #This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere.
 def update_player(cursor,user):
     sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"
@@ -78,3 +76,5 @@ def getairport(IDENT,cursor):
 def getcountry(cursor,name):
     country = db_query(f"SELECT COUNTRY.NAME FROM AIRPORT,COUNTRY WHERE AIRPORT.IDENT = '{name}' AND AIRPORT.ISO_COUNTRY = COUNTRY.ISO_COUNTRY",cursor)[0]
     return country
+def getcoordinates(cursor,ident):
+    return db_query(f"SELECT LATITUDE_DEG, LONGITUDE_DEG FROM AIRPORT WHERE IDENT = '{ident}'",cursor)

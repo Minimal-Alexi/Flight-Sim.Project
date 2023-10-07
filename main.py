@@ -95,8 +95,8 @@ else:
 move = True
 while run == True:
     #The program will have to remind the player what airport they are located in:
-    if move == False:
-        print(f"You are at {getairport(user.location)[0]} ({get_country_from_ident(getairport(user.location)[0])[0]})")
+    #if move == False:
+        #print(f"You are at {getairport(user.location)[0]} ({get_country_from_ident(getairport(user.location),cursor)[0]})")
     print("1 - Move to a local airport ")
     print("2 - Move to an international airport ")
     print("3 - Pick up quests from the airport ")
@@ -105,11 +105,14 @@ while run == True:
     print("6 - Log out. ")
     UsInput = int(input("Which choice would you like to pick?: "))
     if UsInput == 1:
-        local_airport_fetcher(cursor,user.databaseID)
+        user.Fuel = 100
+        local_airport_fetcher(cursor,user.databaseID,user)
         move = True
+        update_player(cursor,user)
     elif UsInput == 2:
         InternationalAirportFetcher(cursor,user.databaseID,user)
         move = True
+        update_player(cursor, user)
     elif UsInput == 3:
         print("WIP")
         move = False
@@ -125,6 +128,11 @@ while run == True:
         player_status(user)
         move = False
     elif UsInput == 6:
+        if BoughtFuelTank == True or BoughtExtraCash == True:
+            print("Beware, if you leave you loose your one-time purchases and quests!")
+            confirm = int(input("Are you sure you want to leave, type 6 again if so."))
+            if confirm == 6:
+                run = False
         run = False
     else:
         print("Not available, please try again")
