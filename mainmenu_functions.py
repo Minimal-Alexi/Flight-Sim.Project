@@ -6,6 +6,7 @@ from Database import (get_continent, get_continent_list, get_airport_list,
 from geopy import distance
 from random import randint, random, choice
 from Player import Player
+from Quest import CheckQuest
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -62,13 +63,15 @@ def Goodbye():
     print(GoodbyeMessage[Randomgoodbye])
 
 
-def distance_limiter(airports,user):
-    counter = 0
-    airports [:] = [x for x in airports if not distance.distance((x[2],x[3]),getcoordinates(cursor,user.location)).km > user.Fuel*user.Fuel_Efficiency]
+def distance_limiter(airports,user,fueltank):
+    if fueltank == True:
+        fueltank = 500
+    else:
+        fueltank = 0
+    airports [:] = [x for x in airports if not distance.distance((x[2],x[3]),getcoordinates(cursor,user.location)).km > (user.Fuel+fueltank)*user.Fuel_Efficiency]
 
-
-def Fuel_Calc(ident,user):
-    user.Fuel=int(user.Fuel-distance.distance(getcoordinates(cursor,ident), getcoordinates(cursor, user.location)).km/user.Fuel_Efficiency)
+def Fuel_Calc(ident,user,fueltank):
+    user.Fuel=int(user.Fuel+fueltank-distance.distance(getcoordinates(cursor,ident), getcoordinates(cursor, user.location)).km/user.Fuel_Efficiency)
 
 
 def player_status(user):
@@ -80,7 +83,7 @@ def player_status(user):
     stop = input()
 
 
-def local_airport_fetcher(cursor, user_id, user: Player):
+def local_airport_fetcher(cursor, user_id, user: Player, fueltank):
     # This function will run a cli menu where the user selects an local airport
     print(f"Current location: {get_airport_name_from_ident(user.location, cursor)}")
 
@@ -95,22 +98,22 @@ def local_airport_fetcher(cursor, user_id, user: Player):
 
     # Display available airports
     airports = get_airport_list(cursor, country_rn[1], airport_type_sel)
-    distance_limiter(airports,user)
+    distance_limiter(airports,user,fueltank)
     display_menu_list(airports)
 
     selection = int(input("Select Airport: "))
     airport_sel = airports[selection - 1][0]
 
-    Fuel_Calc(airports[selection - 1][1], user)
+    Fuel_Calc(airports[selection - 1][1], user,fueltank)
     user.update_location(airports[selection - 1][1], cursor)
     print(f"\nLocation updated to {airport_sel}")
-
     if is_event():
         event_encounter(user, cursor)
+    CheckQuest(user,cursor)
+    fueltank = False
 
 
-
-def InternationalAirportFetcher(cursor, user_id, user: Player):
+def InternationalAirportFetcher(cursor, user_id, user: Player, fueltank):
 
     # This function will run a cli menu where the user selects an international airport
     print(f"Current location: {get_airport_name_from_ident(user.location, cursor)}")
@@ -138,17 +141,17 @@ def InternationalAirportFetcher(cursor, user_id, user: Player):
 
     # Display available airports
     airports = get_airport_list(cursor, country_sel, airport_type_sel)
-    distance_limiter(airports,user)
+    distance_limiter(airports,user,fueltank)
     display_menu_list(airports)
     selection = int(input("Select Airport: "))
     airport_sel = airports[selection - 1][0]
-    Fuel_Calc(airports[selection - 1][1], user)
+    Fuel_Calc(airports[selection - 1][1], user,fueltank)
     user.update_location(airports[selection - 1][1], cursor)
     print(f"\nLocation updated to {airport_sel}")
-
+    fueltank = False
     if is_event():
         event_encounter(user, cursor)
-
+    CheckQuest(user, cursor)
 
 
 
@@ -189,8 +192,10 @@ def random_event(events):
 
 # events definition
 events = {
-    "Event 1": ("You've encountered a sudden robbery! You have lost 35 euros. Sad.", "money", -35),
+    "Event 1": ("You've encountered a sudden robbery! You have lost 35$. Sad.", "money", -35),
     "Event 2": ("Uh oh! Seems like there's a LEAK in your FUEL TANK! You lost 10 litres of it. ):", "fuel", -10),
+    "Event 3": ("You picked the trash off the floor. Turns out it was Uranium-235 and you saved the airfield from collapse. You might want to go to a doctor. ):", "CO2", +500),
+    "Event 4": ("Lucky you, found 100$ just lying in there. Now quickly, before the cops find you! ):", "money", +100)
 }
 
 def event_encounter(user, cursor):
@@ -200,4 +205,34 @@ def event_encounter(user, cursor):
         user.Money = user.Money + event[2]
     elif event[1] == "fuel":
         user.Fuel = user.Fuel + event[2]
+    elif event[1] == "CO2":
+        user.CO2_Budget = user.CO2_Budget + event[2]
 
+def check_end_goal(current_location):
+    if current_location == "KLAX":
+        return True
+    else:
+        return False
+def Score(user):
+    return user.Money+user.CO2_Budget*1000
+def Win(user):
+    print("Congratulations, you have won! You have delivered water to the Californians")
+    if user.CO2_Budget <= 0:
+        print("However, the path of smoke and destruction you've left, has forever doomed the countries you have traveled to.")
+        print("Your journey was inefficient and destructive, but at least the water has arrived on time.")
+        print("Was it worth it?")
+        print(f"Final score: {Score(user)}")
+    elif user.CO2_Budget <= 100:
+        print("You were really close to catastrophe.")
+        print("But you successfully delivered water to all the poor californians, and you did it on time no less!")
+        print("I'm sure the Americans will accept immigrants like you, right?")
+        print("Uhmm...yeah, good luck flying back to Finland!")
+        print(f"Final score: {Score(user)}")
+    else:
+        print("Hooray, you did your best, protected the environment, and saved California.")
+        print("Yes...all of it.")
+        print("Look, the drought was really severe.")
+        print("Tommorrow president Boe Jiden will give you an award for protecting the planet and saving Californians")
+        stop = input()
+        print("You probably should've stopped at saving just the planet but it's fine. Good job pilot :3.")
+        print(f"Final score: {Score(user)}")

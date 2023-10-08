@@ -1,11 +1,9 @@
 import mysql.connector
-import pygame
-import geopy
 from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_country_list, get_user_location, update_player,get_country_from_ident)
-from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser)
+                      get_country_list, get_user_location, update_player,get_country_from_ident,checklarge)
+from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser,check_end_goal,Win)
 from Player import Player
-
+from Quest import QuestMenu
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -77,6 +75,7 @@ user = Player()
 
 
 run = False
+win = True
 print("1 - Would you like to register a new user?")
 print("2 - Would you like to login as a user?")
 print("3 - Quit")
@@ -97,8 +96,8 @@ else:
 move = True
 while run == True:
     #The program will have to remind the player what airport they are located in:
-    #if move == False:
-        #print(f"You are at {getairport(user.location)[0]} ({get_country_from_ident(getairport(user.location),cursor)[0]})")
+    if move == False:
+        print(f"You are at {getairport(user.location)[0]} ({get_country_from_ident(user.location,cursor)[0]})")
     print("1 - Move to a local airport ")
     print("2 - Move to an international airport ")
     print("3 - Pick up quests from the airport ")
@@ -107,16 +106,25 @@ while run == True:
     print("6 - Log out. ")
     UsInput = int(input("Which choice would you like to pick?: "))
     if UsInput == 1:
-        user.Fuel = 100
-        local_airport_fetcher(cursor, user.databaseID, user)
+        local_airport_fetcher(cursor, user.databaseID, user,BoughtFuelTank)
         move = True
         update_player(cursor,user)
+        if check_end_goal(user.location) == True:
+            run = False
+            Win(user)
     elif UsInput == 2:
-        InternationalAirportFetcher(cursor,user.databaseID,user)
-        move = True
-        update_player(cursor, user)
+        if checklarge(cursor,user.location) == True:
+            InternationalAirportFetcher(cursor,user.databaseID,user,BoughtFuelTank)
+            move = True
+            update_player(cursor, user)
+            if check_end_goal(user.location) == True:
+                run = False
+                Win(user)
+        else:
+            print("You are not at a large airport, you can't travel internationally!")
+            move = False
     elif UsInput == 3:
-        print("WIP")
+        QuestMenu(user,cursor)
         move = False
     elif UsInput == 4:
         if Shop(user) == True:
