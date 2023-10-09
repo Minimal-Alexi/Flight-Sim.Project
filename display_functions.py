@@ -5,6 +5,7 @@ from Database import get_continent
 # Takes a list and displays as numbered menu
 def display_menu_list(disp_list):
     counter = 1
+    disp_list.sort()
     for x in disp_list:
         print(f"{counter}. {x[0]}")
         counter += 1
