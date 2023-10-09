@@ -28,7 +28,7 @@ def UserReg(input):
         maxi = maxi + 1
     else:
         maxi = 1
-    sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY) VALUES ({maxi},100,10000,'EGCC','{input}',100,5)"
+    sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY) VALUES ({maxi},100,10000,'EFHK','{input}',100,10)"
     db_query(sql,cursor)
 def getairport(IDENT):
     name = (db_query(f"SELECT NAME FROM AIRPORT WHERE IDENT = '{IDENT}'",cursor))[0]
@@ -72,16 +72,6 @@ def distance_limiter(airports,user,fueltank):
 
 def Fuel_Calc(ident,user,fueltank):
     user.Fuel=int(user.Fuel+fueltank-distance.distance(getcoordinates(cursor,ident), getcoordinates(cursor, user.location)).km/user.Fuel_Efficiency)
-
-
-def player_status(user):
-    print(f"Current Player Stats:")
-    print(f"Fuel Efficiency: {user.Fuel_Efficiency} km/liters")
-    print(f"Fuel: {user.Fuel} liters")
-    print(f"Money: {user.Money}$")
-    print(f"CO2 Budget: {user.CO2_Budget} credits")
-    stop = input()
-
 
 def local_airport_fetcher(cursor, user_id, user: Player, fueltank):
     # This function will run a cli menu where the user selects an local airport

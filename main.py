@@ -1,9 +1,10 @@
 import mysql.connector
 from Database import (get_continent, get_continent_list, get_airport_list,
                       get_country_list, get_user_location, update_player,get_country_from_ident,checklarge)
-from mainmenu_functions import (UserLog,UserReg,Goodbye,player_status,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser,check_end_goal,Win)
+from mainmenu_functions import (UserLog,UserReg,Goodbye,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser,check_end_goal,Win)
 from Player import Player
 from Quest import QuestMenu
+from display_functions import player_status
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -47,7 +48,7 @@ def Shop(user):
     quantity = 1;
     if selected_item == "+5km/l Fuel Efficiency":
         quantity = int(input("Insert the quantity of the item you want to purchase. (Max fuel efficiency is 20) "))
-        if user.Fuel_Efficiency==20 or quantity*5+user.Fuel_Efficiency>20:
+        if user.Fuel_Efficiency==50 or quantity*5+user.Fuel_Efficiency>50:
             return False
     if user.Money < moneyprice*quantity:
         print("You don't have enough money.")
@@ -61,8 +62,11 @@ def Shop(user):
         user.Fuel_Efficiency = user.Fuel_Efficiency+5*quantity
     elif selected_item == "One-Time Extra Cargo capacity":
         BoughtExtraCash = True
-    else:
+    elif selected_item == "One-Time Fuel Drop Tanks":
         BoughtFuelTank = True
+    else:
+        user.Fuel = user.Fuel+Refuel
+
     user.Money = user.Money - moneyprice*quantity
     user.CO2_Budget = user.CO2_Budget - CO2_price*quantity
     print(f"Purchase of {selected_item} successful. Your new balance: {user.Money}. You have {user.CO2_Budget} carbon credits left.")
@@ -75,7 +79,6 @@ user = Player()
 
 
 run = False
-win = True
 print("1 - Would you like to register a new user?")
 print("2 - Would you like to login as a user?")
 print("3 - Quit")
@@ -83,10 +86,10 @@ UsInput = int(input("Which choice would you like to pick?: "))
 if UsInput==1:
     UsInput = input("Enter in new username: ")
     UserReg(UsInput)
-    UserLog(user,UsInput)
     if NewUser()==True:
         run = True
         stop = input("Press any key to continue...")
+        UserLog(user, UsInput)
 elif UsInput==2:
     UsInput = input("Enter in your username: ")
     UserLog(user, UsInput)

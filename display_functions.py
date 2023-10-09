@@ -24,3 +24,10 @@ def display_continent_list(continents):
         counter += 1
 
 
+def player_status(user):
+    print(f"Current Player Stats:")
+    print(f"Fuel Efficiency: {user.Fuel_Efficiency} km/liters")
+    print(f"Fuel: {user.Fuel} liters")
+    print(f"Money: {user.Money}$")
+    print(f"CO2 Budget: {user.CO2_Budget} credits")
+    stop = input()

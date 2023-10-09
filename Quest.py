@@ -18,7 +18,7 @@ def QuestMenu(user,cursor):
         print(f"So far, you have travelled to {travelled1} airports. Nice! :3")
     else:
         distance1 = randint(5, 8)
-        reward1 = randint(500, 2000)
+        reward1 = randint(1000, 3500)
         print(f"1 - You have to go to {distance1} local airfields. if you do so, the government will subsidize you with {reward1}$. "
               f"It costs 500 CO2 tokens to load your plane.")
     if user.quest[1]!=False:
@@ -35,11 +35,13 @@ def QuestMenu(user,cursor):
         print(
             f"2 - You have to go to {distance2} international airfields. if you do so, the government will subsidize you with {reward2}$. "
             f"It costs 750 CO2 tokens to load your plane.")
-    print("3 - Would you like to plant some trees? (-1500$,+1000 CO2")
+    print("3 - Would you like to plant some trees? (-1500$,+1000 CO2)")
     print("4 - Quit")
     UsInput = int(input("Which quest would you like to pick?"))
     if UsInput == 1 and user.quest[0]==False:
         country1 = get_country_from_ident(user.location,cursor)[0]
+        #Yes, we are creating a list in a list. Reward1 is how much money the player gets. distance1 is the goal distance they have to travel.
+        # 0 is the distance they've travelled, and country 1 is the country they have the quest in.
         user.quest[0] = [reward1,distance1,0,country1]
         user.CO2_Budget = user.CO2_Budget - 500
     elif UsInput == 2 and user.quest[1]==False:
@@ -52,7 +54,7 @@ def QuestMenu(user,cursor):
     elif UsInput != 4:
         print("Invalid choice,try again.")
         QuestMenu()
-    print(user.quest)
+    #print(user.quest)
 
 def CheckQuest(user,cursor):
     if user.quest[0]!=False:
