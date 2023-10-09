@@ -65,7 +65,7 @@ def CheckQuest(user,cursor):
     if user.quest[1]!=False:
         if get_country_from_ident(user.location,cursor)[0] != user.quest[1][3]:
             user.quest[1][2] = user.quest[1][2]+1
-        if user.quest[1][2]==user.quest[0][1]:
+        if user.quest[1][2]==user.quest[1][1]:
             user.Money=user.Money+user.quest[1][0]
             print(f"Congrats, you have finished your quest, you've now earned {user.quest[1][0]}$")
             user.quest[1]=False

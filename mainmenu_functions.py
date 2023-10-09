@@ -154,7 +154,7 @@ def InternationalAirportFetcher(cursor, user_id, user: Player, fueltank):
     CheckQuest(user, cursor)
 
 
-
+#This function plays specifically after the user creates a new account. Hooray!
 def NewUser():
     print("Welcome to GreenFLY - The Ultimate Flight Simulator!")
     print("-------------------------------------------------------")
@@ -216,6 +216,7 @@ def check_end_goal(current_location):
 def Score(user):
     return user.Money+user.CO2_Budget*1000
 def Win(user):
+    #This function gives the player a victory screen based on different conditions.
     print("Congratulations, you have won! You have delivered water to the Californians")
     if user.CO2_Budget <= 0:
         print("However, the path of smoke and destruction you've left, has forever doomed the countries you have traveled to.")

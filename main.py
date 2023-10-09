@@ -126,6 +126,7 @@ while run == True:
     elif UsInput == 3:
         QuestMenu(user,cursor)
         move = False
+        update_player(cursor, user)
     elif UsInput == 4:
         if Shop(user) == True:
             print("Purchase successful")
