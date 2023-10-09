@@ -1,6 +1,6 @@
 from random import randint
 from Database import get_country_from_ident
-def QuestMenu(user,cursor):
+def QuestMenu(user,cursor,extracash):
     reward1 = 0
     reward2 = 0
     distance1 = 0
@@ -19,6 +19,8 @@ def QuestMenu(user,cursor):
     else:
         distance1 = randint(5, 8)
         reward1 = randint(1000, 3500)
+        if extracash == True:
+            reward1 = reward1 + 750
         print(f"1 - You have to go to {distance1} local airfields. if you do so, the government will subsidize you with {reward1}$. "
               f"It costs 500 CO2 tokens to load your plane.")
     if user.quest[1]!=False:
@@ -30,6 +32,8 @@ def QuestMenu(user,cursor):
         print(f"You have to go to {distance2} international airfields (that are not {country2}. if you do so, the government will subsidize you with {reward1}$.")
         print(f"So far, you have travelled to {travelled2} airports. Nice! :3")
     else:
+        if extracash == True:
+            reward1 = reward1 + 750
         distance2 = randint(1, 3)
         reward2 = randint(750, 5000)
         print(
@@ -54,6 +58,7 @@ def QuestMenu(user,cursor):
     elif UsInput != 4:
         print("Invalid choice,try again.")
         QuestMenu()
+    extracash = False
     #print(user.quest)
 
 def CheckQuest(user,cursor):

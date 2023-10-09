@@ -127,7 +127,7 @@ while run == True:
             print("You are not at a large airport, you can't travel internationally!")
             move = False
     elif UsInput == 3:
-        QuestMenu(user,cursor)
+        QuestMenu(user,cursor,BoughtExtraCash)
         move = False
         update_player(cursor, user)
     elif UsInput == 4:
