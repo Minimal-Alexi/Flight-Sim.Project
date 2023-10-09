@@ -23,7 +23,6 @@ BoughtExtraCash = False
 def Shop(user):
     print(f"Your current balance: {user.Money}$")
     print(f"Your current CO2 budget: {user.CO2_Budget}")
-    print(f"Your current CO2 budget: {user.Fuel}")
     Refuel = 100 - user.Fuel
 
     #All items have a money and CO2 price
@@ -47,7 +46,7 @@ def Shop(user):
     (moneyprice, CO2_price) = items[selected_item]
     quantity = 1;
     if selected_item == "+5km/l Fuel Efficiency":
-        quantity = int(input("Insert the quantity of the item you want to purchase. (Max fuel efficiency is 20) "))
+        quantity = int(input(f"Insert the quantity of the item you want to purchase. (Max fuel efficiency is 50, you have {user.Fuel_Efficiency}) "))
         if user.Fuel_Efficiency==50 or quantity*5+user.Fuel_Efficiency>50:
             return False
     if user.Money < moneyprice*quantity:

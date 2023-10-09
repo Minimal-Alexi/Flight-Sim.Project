@@ -62,6 +62,7 @@ def QuestMenu(user,cursor,extracash):
     #print(user.quest)
 
 def CheckQuest(user,cursor):
+    #Thos function checks,and updates players progress on their own quests.
     if user.quest[0]!=False:
         if get_country_from_ident(user.location,cursor)[0] == user.quest[0][3]:
             user.quest[0][2] = user.quest[0][2]+1

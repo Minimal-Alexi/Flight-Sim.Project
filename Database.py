@@ -61,7 +61,8 @@ def get_country_list(cursor, continent):
                     f"from country, airport "
                     f"where country.continent = '{continent}'"
                     f"and country.iso_country = airport.iso_country "
-                    f"and (airport.type = 'medium_airport' or airport.type =  'large airport')", cursor)
+                    f"and (airport.type = 'medium_airport' or airport.type =  'large airport')"
+                    f"ORDER BY COUNTRY.NAME", cursor)
 
 
 # Takes country name and returns list of distinct airport types
@@ -85,7 +86,8 @@ def get_airport_list(cursor, country, airport_type):
                     f"from airport, country "
                     f"where airport.iso_country = country.iso_country "
                     f"and country.name = '{country}' "
-                    f"and airport.type = '{airport_type}'", cursor)
+                    f"and airport.type = '{airport_type}'"
+                    f"ORDER BY airport.name", cursor)
 #This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere.
 def update_player(cursor,user):
     sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"

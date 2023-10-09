@@ -1,5 +1,5 @@
 import mysql.connector
-from display_functions import display_menu_list,display_country_list,display_continent_list
+from display_functions import display_menu_list,display_continent_list,display_airport
 from Database import (get_continent, get_continent_list, get_airport_list,
                       get_intl_airport_type_list, get_local_airport_type_list, get_country_list, get_user_location,
                       update_player,get_country_from_ident,db_query,getcountry,getcoordinates, get_airport_name_from_ident)
@@ -28,7 +28,7 @@ def UserReg(input):
         maxi = maxi + 1
     else:
         maxi = 1
-    sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY) VALUES ({maxi},100,10000,'EFHK','{input}',100,10)"
+    sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY) VALUES ({maxi},1000,10000,'EFHK','{input}',100,10)"
     db_query(sql,cursor)
 def getairport(IDENT):
     name = (db_query(f"SELECT NAME FROM AIRPORT WHERE IDENT = '{IDENT}'",cursor))[0]
@@ -82,16 +82,19 @@ def local_airport_fetcher(cursor, user_id, user: Player, fueltank):
     # Get airport_type from user
     display_menu_list(get_local_airport_type_list(cursor,country_rn[1]))
     selection = int(input("Select Airport Type: "))
-
+    if selection == 0:
+        return False
     airport_types = get_local_airport_type_list(cursor, country_rn[1])
     airport_type_sel = airport_types[selection - 1][0]
 
     # Display available airports
     airports = get_airport_list(cursor, country_rn[1], airport_type_sel)
     distance_limiter(airports,user,fueltank)
-    display_menu_list(airports)
+    display_airport(airports,user,cursor)
 
     selection = int(input("Select Airport: "))
+    if selection == 0:
+        return False
     airport_sel = airports[selection - 1][0]
 
     Fuel_Calc(airports[selection - 1][1], user,fueltank)
@@ -111,29 +114,35 @@ def InternationalAirportFetcher(cursor, user_id, user: Player, fueltank):
     # Get continent from user
     display_continent_list(get_continent_list(cursor))
     selection = int(input("Select Continent: "))
-
+    if selection == 0:
+        return False
     continents = get_continent_list(cursor)
     continent_sel = continents[selection - 1][0]
 
     # Get country from user
     display_menu_list(get_country_list(cursor, continent_sel))
     selection = int(input("Select Country: "))
-
+    if selection == 0:
+        return False
     countries = get_country_list(cursor, continent_sel)
     country_sel = countries[selection - 1][0]
 
     # Get airport_type from user
     display_menu_list(get_intl_airport_type_list(cursor, country_sel))
     selection = int(input("Select Airport Type: "))
-
+    if selection == 0:
+        return False
     airport_types = get_intl_airport_type_list(cursor, country_sel)
     airport_type_sel = airport_types[selection - 1][0]
 
     # Display available airports
     airports = get_airport_list(cursor, country_sel, airport_type_sel)
     distance_limiter(airports,user,fueltank)
-    display_menu_list(airports)
+    #display_menu_list(airports)
+    display_airport(airports,user,cursor)
     selection = int(input("Select Airport: "))
+    if selection == 0:
+        return False
     airport_sel = airports[selection - 1][0]
     Fuel_Calc(airports[selection - 1][1], user,fueltank)
     user.update_location(airports[selection - 1][1], cursor)
@@ -151,7 +160,7 @@ def NewUser():
     print("You are starting from Helsinki international airport, your purpose is to travel to LA International airport to deliver water to drought struck California")
     print("You will face many challenges, quests, and financial hurdles, remember to keep your CO2 budget in the positive!")
     print("Are you ready to fly? :3")
-    print("\n1 Start your Flight")
+    print("\n1 - Start your Flight")
     print("2 - Exit")
     user_input = input("Which choice would you like to pick?: ")
     if user_input == '1':
