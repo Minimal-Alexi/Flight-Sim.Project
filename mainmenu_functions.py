@@ -68,12 +68,20 @@ def distance_limiter(airports,user,fueltank):
         fueltank = 500
     else:
         fueltank = 0
-    airports [:] = [x for x in airports if not distance.distance((x[2],x[3]),getcoordinates(cursor,user.location)).km > (user.Fuel+fueltank)*user.Fuel_Efficiency]
+    airports [:] = [x for x in airports if not distance.distance((x[2],x[3]),getcoordinates(cursor,user.location)).km + fueltank> (user.Fuel+fueltank)*user.Fuel_Efficiency]
 
 def Fuel_Calc(ident,user,fueltank):
+    if fueltank == True:
+        fueltank = 500
+    else:
+        fueltank = 0
     user.Fuel=int(user.Fuel+fueltank-distance.distance(getcoordinates(cursor,ident), getcoordinates(cursor, user.location)).km/user.Fuel_Efficiency)
+    if user.Fuel >=500 and user.Fuel<=600:
+        user.Fuel = user.Fuel - 500
+    else:
+        user.Fuel = user.Fuel - user.Fuel
 
-def local_airport_fetcher(cursor, user_id, user: Player, fueltank):
+def local_airport_fetcher(cursor, user_id, user: Player):
     # This function will run a cli menu where the user selects an local airport
     print(f"Current location: {get_airport_name_from_ident(user.location, cursor)}")
 
@@ -89,7 +97,7 @@ def local_airport_fetcher(cursor, user_id, user: Player, fueltank):
 
     # Display available airports
     airports = get_airport_list(cursor, country_rn[1], airport_type_sel)
-    distance_limiter(airports,user,fueltank)
+    distance_limiter(airports,user,user.BoughtFuelTank)
     display_airport(airports,user,cursor)
 
     selection = int(input("Select Airport: "))
@@ -97,16 +105,16 @@ def local_airport_fetcher(cursor, user_id, user: Player, fueltank):
         return False
     airport_sel = airports[selection - 1][0]
 
-    Fuel_Calc(airports[selection - 1][1], user,fueltank)
+    Fuel_Calc(airports[selection - 1][1], user,user.BoughtFuelTank)
     user.update_location(airports[selection - 1][1], cursor)
     print(f"\nLocation updated to {airport_sel}")
     if is_event():
         event_encounter(user, cursor)
     CheckQuest(user,cursor)
-    fueltank = False
+    user.BoughtFuelTank = False
 
 
-def InternationalAirportFetcher(cursor, user_id, user: Player, fueltank):
+def InternationalAirportFetcher(cursor, user_id, user: Player):
 
     # This function will run a cli menu where the user selects an international airport
     print(f"Current location: {get_airport_name_from_ident(user.location, cursor)}")
@@ -137,25 +145,25 @@ def InternationalAirportFetcher(cursor, user_id, user: Player, fueltank):
 
     # Display available airports
     airports = get_airport_list(cursor, country_sel, airport_type_sel)
-    distance_limiter(airports,user,fueltank)
+    distance_limiter(airports,user,user.BoughtFuelTank)
     #display_menu_list(airports)
     display_airport(airports,user,cursor)
     selection = int(input("Select Airport: "))
     if selection == 0:
         return False
     airport_sel = airports[selection - 1][0]
-    Fuel_Calc(airports[selection - 1][1], user,fueltank)
+    Fuel_Calc(airports[selection - 1][1], user,user.BoughtFuelTank)
     user.update_location(airports[selection - 1][1], cursor)
     print(f"\nLocation updated to {airport_sel}")
-    fueltank = False
+    user.BoughtFuelTank = False
     if is_event():
         event_encounter(user, cursor)
     CheckQuest(user, cursor)
-
+    user.BoughtFuelTank = False
 
 #This function plays specifically after the user creates a new account. Hooray!
 def NewUser():
-    print("Welcome to GreenFLY - The Ultimate Flight Simulator!")
+    print("Welcome to EcoFLY - The Ultimate Flight Simulator!")
     print("-------------------------------------------------------")
     print("You are starting from Helsinki international airport, your purpose is to travel to LA International airport to deliver water to drought struck California")
     print("You will face many challenges, quests, and financial hurdles, remember to keep your CO2 budget in the positive!")

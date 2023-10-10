@@ -18,8 +18,6 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 #These are global variables, they can be edited in any function. This will be important for later.
-BoughtFuelTank = False
-BoughtExtraCash = False
 def Shop(user):
     print(f"Your current balance: {user.Money}$")
     print(f"Your current CO2 budget: {user.CO2_Budget}")
@@ -60,9 +58,9 @@ def Shop(user):
     if selected_item == "+5km/l Fuel Efficiency":
         user.Fuel_Efficiency = user.Fuel_Efficiency+5*quantity
     elif selected_item == "One-Time Extra Cargo capacity":
-        BoughtExtraCash = True
+        user.BoughtExtraCash = True
     elif selected_item == "One-Time Fuel Drop Tanks":
-        BoughtFuelTank = True
+        user.BoughtFuelTank = True
     else:
         user.Fuel = user.Fuel+Refuel
 
@@ -108,7 +106,7 @@ while run == True:
     print("6 - Log out. ")
     UsInput = int(input("Which choice would you like to pick?: "))
     if UsInput == 1:
-        local_airport_fetcher(cursor, user.databaseID, user,BoughtFuelTank)
+        local_airport_fetcher(cursor, user.databaseID, user)
         move = True
         update_player(cursor,user)
         if check_end_goal(user.location) == True:
@@ -116,7 +114,7 @@ while run == True:
             Win(user)
     elif UsInput == 2:
         if checklarge(cursor,user.location) == True:
-            InternationalAirportFetcher(cursor,user.databaseID,user,BoughtFuelTank)
+            InternationalAirportFetcher(cursor,user.databaseID,user)
             move = True
             update_player(cursor, user)
             if check_end_goal(user.location) == True:
@@ -126,7 +124,7 @@ while run == True:
             print("You are not at a large airport, you can't travel internationally!")
             move = False
     elif UsInput == 3:
-        QuestMenu(user,cursor,BoughtExtraCash)
+        QuestMenu(user,cursor)
         move = False
         update_player(cursor, user)
     elif UsInput == 4:
@@ -141,7 +139,7 @@ while run == True:
         player_status(user)
         move = False
     elif UsInput == 6:
-        if BoughtFuelTank == True or BoughtExtraCash == True:
+        if user.BoughtFuelTank == True or user.BoughtExtraCash == True:
             print("Beware, if you leave you loose your one-time purchases and quests!")
             confirm = int(input("Are you sure you want to leave, type 6 again if so."))
             if confirm == 6:
