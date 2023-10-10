@@ -43,7 +43,7 @@ def UserLog(user, input):
         for row in result:
             name = getairport(row[1])[0]
             country = getcountry(cursor,row[1])[0]
-            print(f"Hello, you are {row[2]}, at airport {name} ({country}), with a CO2_budget of {row[0]}. You have {row[4]}$, very rich :3.")
+            print(f"Hello, you are {row[2]}, at airport {name} ({country}), with {row[5]} litres of fuel. You have {row[4]}$, very rich :3.")
     user.location = row[1]
     user.CO2_Budget = row[0]
     user.databaseID = row[3]
