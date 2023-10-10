@@ -1,7 +1,7 @@
 import mysql.connector
-from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_country_list, get_user_location, update_player,get_country_from_ident,checklarge)
-from mainmenu_functions import (UserLog,UserReg,Goodbye,getairport,local_airport_fetcher,InternationalAirportFetcher,NewUser,check_end_goal,Win)
+from Database import ( update_player,get_country_from_ident,checklarge)
+from mainmenu_functions import (UserLog,UserReg,Goodbye,getairport,local_airport_fetcher,InternationalAirportFetcher,
+                                NewUser,check_end_goal,Win)
 from Player import Player
 from Quest import QuestMenu
 from display_functions import player_status

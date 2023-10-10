@@ -1,5 +1,4 @@
 # All MariaDB interactions go here
-from geopy import distance
 
 # takes sql text for query and cursor and returns result of query
 def db_query(sql, cursor):
@@ -50,7 +49,7 @@ def get_continent(continent_code):
     return continents[continent_code]
 
 
-# Takes
+# Gets continent list from the db
 def get_continent_list(cursor):
     return db_query("select distinct continent from airport", cursor)
 
@@ -88,6 +87,8 @@ def get_airport_list(cursor, country, airport_type):
                     f"and country.name = '{country}' "
                     f"and airport.type = '{airport_type}'"
                     f"ORDER BY airport.name", cursor)
+
+
 #This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere.
 def update_player(cursor,user):
     sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"

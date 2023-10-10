@@ -1,5 +1,3 @@
-import mysql.connector
-
 
 class Player:
     databaseID = 0
