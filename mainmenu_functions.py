@@ -1,8 +1,8 @@
 import mysql.connector
 from display_functions import display_menu_list,display_continent_list,display_airport
-from Database import (get_continent, get_continent_list, get_airport_list,
-                      get_intl_airport_type_list, get_local_airport_type_list, get_country_list, get_user_location,
-                      update_player,get_country_from_ident,db_query,getcountry,getcoordinates, get_airport_name_from_ident)
+from Database import (get_continent_list, get_airport_list,
+                      get_intl_airport_type_list, get_local_airport_type_list, get_country_list,get_country_from_ident,
+                      db_query,getcountry,getcoordinates, get_airport_name_from_ident)
 from geopy import distance
 from random import randint, random, choice
 from Player import Player
@@ -43,7 +43,7 @@ def UserLog(user, input):
         for row in result:
             name = getairport(row[1])[0]
             country = getcountry(cursor,row[1])[0]
-            print(f"Hello, you are {row[2]}, at airport {name} ({country}), with a CO2_budget of {row[0]}. You have {row[4]}$, very rich :3.")
+            print(f"Hello, you are {row[2]}, at airport {name} ({country}), with {row[5]} litres of fuel. You have {row[4]}$, very rich :3.")
     user.location = row[1]
     user.CO2_Budget = row[0]
     user.databaseID = row[3]
@@ -217,6 +217,8 @@ def event_encounter(user, cursor):
         user.Fuel = user.Fuel + event[2]
     elif event[1] == "CO2":
         user.CO2_Budget = user.CO2_Budget + event[2]
+
+
 
 def check_end_goal(current_location):
     if current_location == "KLAX":

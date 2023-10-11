@@ -41,7 +41,7 @@ def QuestMenu(user,cursor):
             f"It costs 750 CO2 tokens to load your plane.")
     print("3 - Would you like to plant some trees? (-1500$,+1000 CO2)")
     print("4 - Quit")
-    UsInput = int(input("Which quest would you like to pick?"))
+    UsInput = int(input("Which quest would you like to pick?: "))
     if UsInput == 1 and user.quest[0]==False:
         country1 = get_country_from_ident(user.location,cursor)[0]
         #Yes, we are creating a list in a list. Reward1 is how much money the player gets. distance1 is the goal distance they have to travel.
