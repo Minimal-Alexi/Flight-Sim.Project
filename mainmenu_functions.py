@@ -71,14 +71,17 @@ def distance_limiter(airports,user,fueltank):
     airports [:] = [x for x in airports if not distance.distance((x[2],x[3]),getcoordinates(cursor,user.location)).km + fueltank> (user.Fuel+fueltank)*user.Fuel_Efficiency]
 
 def Fuel_Calc(ident,user,fueltank):
+    #This is basically a last minute repair with duct tape. I don't like it, it works. WOOOOOOOOOOOOOOOOOO
+    fueltankwas = False
     if fueltank == True:
         fueltank = 500
+        fueltankwas = True
     else:
         fueltank = 0
     user.Fuel=int(user.Fuel+fueltank-distance.distance(getcoordinates(cursor,ident), getcoordinates(cursor, user.location)).km/user.Fuel_Efficiency)
-    if user.Fuel >=500 and user.Fuel<=600:
+    if fueltankwas == True and user.Fuel >=500 and user.Fuel<=600:
         user.Fuel = user.Fuel - 500
-    else:
+    elif fueltankwas == True:
         user.Fuel = user.Fuel - user.Fuel
 
 def local_airport_fetcher(cursor, user_id, user: Player):
