@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- text google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Graduate&family=Special+Elite&display=swap" rel="stylesheet">
+    <!-- link to style sheets -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"/>
+    <link href="css/style.css" rel="stylesheet">
+    <!-- add an icon pic in the tab-->
+    <link rel="icon" href="/img/tab_logo.png" type="image/png">
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" defer></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <!-- Need to discuss what the game title should be named -->
+    <title>Top Ace Airplane</title>
+</head>
+
+<body>
+    <main class="flex-wrap">
+        <div class="container">
+            <header class="page-header">
+                <img src="img/airplane_logo.png" alt="Header Image">
+                <h1 class="page-title">
+                    <ion-icon name="airplane-outline"></ion-icon>&nbsp;Environment-Friendly&nbsp;California&nbsp;
+                    <ion-icon name="airplane-outline"></ion-icon>
+                </h1>
+                <nav>
+                    <ul class="flex-wrap space-evenly">
+                        <li>
+                            <a class="button button-white" href="index.html">Game</a>
+                        </li>
+                        <li>
+                            <a class="button button-white" href="about.html">About</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div id = "map">
+                <!-- add map in js -->
+                <img class="responsive-img" src="img/finland.svg" alt="map of finland">
+            </div>
+            <div class="boxes">
+                <section class="box">
+                    <header>
+                        <h2>Game Status</h2>
+                    </header>
+                    <table>
+                        <tr>
+                            <td colspan="2">Player Name</td>
+                        </tr>
+                        <tr>
+                            <!-- select span element and change in js -->
+                            <td>CO2 Consumed <span id="consumed">0</span>kg</td>
+                            <td>CO2 Budget: <span id="budget">1000</span>kg</td>
+                        </tr>
+                    </table>
+                </section>
+                <section class="box">
+                    <header>
+                        <h2 id="airport-name">Airport Name</h2>
+                    </header>
+                    <table>
+                        <tr>
+                            <td>Temperature</td>
+                            <td>
+                                <img id="weather-icon" src="https://openweathermap.org/img/wn/10d@2x.png" alt="Current Weather">
+                            </td>
+                            <td>Wind</td>
+                        </tr>
+                        <tr>
+                            <td id="airport-temp">-10°C</td>
+                            <td id="airport-conditions">Cloudy</td>
+                            <td id="airport-wind">40m/s</td>
+                        </tr>
+                    </table>
+                </section>
+                <section class="box">
+                    <header>
+                        <h2>Goals</h2>
+                    </header>
+                    <ul id="goals" class="flex-wrap">
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
+                                <figcaption>Temperature over +25°C</figcaption>
+                            </figure>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <p>This game is made by group 3. All rights reserved ©2023 Software 2 Group B Copyright Metropolia UAS</p>
+    </footer>
+    <div class="goal">
+        <h2>Cooooooool!!!</h2>
+        <p>
+            <!-- This can be replaced with specific goal reached in js -->
+            <span id="goal-txt">Goals reached!!!</span>
+        </p>
+    </div>
+
+
+</body>
+
+</html>
