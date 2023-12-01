@@ -1,2 +1,2 @@
-# game-starter-HTML
-Green 'Code' button up there -> Download ZIP
+# game-HTML
+Remember to always check for the latest update
