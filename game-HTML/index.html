@@ -20,7 +20,7 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js" defer></script>
     <script src="js/main.js" defer></script>
     <!-- Need to discuss what the game title should be named -->
-    <title>Top Ace Airplane</title>
+    <title>Eco-Fly</title>
 </head>
 
 <body>
@@ -29,16 +29,19 @@
             <header class="page-header">
                 <img src="img/airplane_logo.png" alt="Header Image">
                 <h1 class="page-title">
-                    <ion-icon name="airplane-outline"></ion-icon>&nbsp;Environment-Friendly&nbsp;California&nbsp;
+                    <ion-icon name="airplane-outline"></ion-icon>&nbsp;Eco-Fly&nbsp;
                     <ion-icon name="airplane-outline"></ion-icon>
                 </h1>
                 <nav>
                     <ul class="flex-wrap space-evenly">
                         <li>
-                            <a class="button button-white" href="index.html">Game</a>
+                            <a class="button button-white" href="index.html">Quest</a>
                         </li>
                         <li>
-                            <a class="button button-white" href="about.html">About</a>
+                            <a class="button button-white" href="about.html">Shop</a>
+                        </li>
+                        <li>
+                            <a class="button button-white" href="about.html">Player</a>
                         </li>
                     </ul>
                 </nav>
@@ -51,16 +54,17 @@
             <div class="boxes">
                 <section class="box">
                     <header>
-                        <h2>Game Status</h2>
+                        <h2>Player Status</h2>
                     </header>
                     <table>
                         <tr>
-                            <td colspan="2">Player Name</td>
+                            <td colspan="2">Player Name: </td>
                         </tr>
                         <tr>
                             <!-- select span element and change in js -->
                             <td>CO2 Consumed <span id="consumed">0</span>kg</td>
                             <td>CO2 Budget: <span id="budget">1000</span>kg</td>
+                            <td>Log out<span id="logout"></span></td>
                         </tr>
                     </table>
                 </section>
@@ -130,13 +134,7 @@
                                 <figcaption>Temperature over +25°C</figcaption>
                             </figure>
                         </li>
-                        <li>
-                            <figure>
-                                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
-                                <figcaption>Temperature over +25°C</figcaption>
-                            </figure>
-                        </li>
-                        <li>
+                        <li class="done">
                             <figure>
                                 <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Goal Weather Icon">
                                 <figcaption>Temperature over +25°C</figcaption>
@@ -150,7 +148,7 @@
     <footer class="page-footer">
         <p>This game is made by group 3. All rights reserved ©2023 Software 2 Group B Copyright Metropolia UAS</p>
     </footer>
-    <div class="goal">
+    <div class="goal hide">
         <h2>Cooooooool!!!</h2>
         <p>
             <!-- This can be replaced with specific goal reached in js -->
