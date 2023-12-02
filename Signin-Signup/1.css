@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
+    font-family:'Graduate';
     box-sizing: border-box;
 }
 
@@ -12,7 +12,7 @@ body {
 .container {
     width: 100vw;
     height: 100vh;
-    background-image: url("4.jpeg");
+    background-image: url("dark-green-vintage-background-1.jpg");
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -22,7 +22,7 @@ body {
 .form-box {
     width: 90%;
     max-width: 450px;
-    background: #fff;
+    background: rgb(203, 192, 120);
     padding: 50px 60px 70px;
     text-align: center;
 }
@@ -30,7 +30,7 @@ body {
 .form-box h1 {
     font-size: 30px;
     margin-bottom: 60px;
-    color: #3c00a0;
+    color: rgb(18, 18, 17);
     position: relative;
 }
 
@@ -86,7 +86,8 @@ form p a {
     background: #3c00a0;
     color: #fff;
     height: 40px;
-    border-radius: 20px;
+    border-radius: 5px;
+    font-size: 20px;
     border: 0;
     outline: 0;
     cursor: pointer;
