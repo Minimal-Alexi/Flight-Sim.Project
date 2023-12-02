@@ -16,7 +16,7 @@ button {
     border-radius: 4px;
     display: block;
     padding: 1rem;
-    background-color: antiquewhite;
+    background-color: rgb(203, 192, 120);
     color: var(--dark-green);
     text-align: center;
 }
@@ -60,13 +60,13 @@ header img {
     background-color: var(--dark-green);
     color: var(--light-green);
     font-family: 'Graduate', Baskerville, Georgia, sans-serif;
-    padding: 1rem;
 }
 
 .page-header {
     background-image: url('../img/dark-green-vintage-background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
+    padding: 0;
 }
 
 .page-title {
@@ -82,9 +82,30 @@ body {
     font-family: 'Special Elite', monospace;
 }
 
+nav {
+    width: 100%;
+}
+
 ul {
+    display: flex;
     list-style-type: none;
-    padding: 0;
+    justify-content: space-evenly;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+li {
+    width: 20%;
+}
+
+li a {
+    width: 100%;
+    font-size: 25px;
+    height: 2rem;
+    display: block;
+    text-align: center;
+    line-height: 2rem;
+    text-decoration: none;
 }
 
 li a {
@@ -93,7 +114,9 @@ li a {
     text-decoration: none;
 }
 
-
+li a:hover {
+    background-color: rgb(128, 168, 171);
+}
 
 #map {
     width: 100%;
@@ -101,12 +124,13 @@ li a {
 }
 
 .boxes {
-    width: 60%;
+    width: 100%;
 }
 
 .box {
     padding: 1rem;
-    font-size: x-small;
+    font-size: large;
+    line-height: 2rem;
 }
 
 #map, .box {
@@ -136,6 +160,7 @@ li a {
 
 footer {
     text-align: center;
+    padding: 1rem;
 }
 
 .goal {
