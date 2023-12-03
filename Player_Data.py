@@ -1,16 +1,17 @@
 
 class Player:
-    databaseID = 0
-    location = "Placeholder"
-    CO2_Budget = 10000
-    Fuel = 100
-    Money = 1000
-    Fuel_Efficiency = 10
-    #this part will remember if the player has taken up a quest. This is about to get real messy
-    quest = [False,False]
-    # Takes new location (IDENT) and updates it for object and for database
-    BoughtFuelTank = False
-    BoughtExtraCash = False
+    def __init__(self,DB_ID,LOC,CO2_Budget,Fuel,Money,BoughtExtraCash,BoughtFuelTank):
+        self.databaseID = DB_ID
+        self.location = LOC
+        self.CO2_Budget = CO2_Budget
+        self.Fuel = Fuel
+        self.Money = Money
+        self.Fuel_Efficiency = 10
+        # this part will remember if the player has taken up a quest. This is about to get real messy
+        self.quest = [False, False]
+        # Takes new location (IDENT) and updates it for object and for database
+        self.BoughtFuelTank = BoughtFuelTank
+        self.BoughtExtraCash = BoughtExtraCash
     def update_location(self, new_location, cursor):
         self.location = new_location
         cursor.execute(f"update game set location = '{new_location}' where id = '{self.databaseID}'")

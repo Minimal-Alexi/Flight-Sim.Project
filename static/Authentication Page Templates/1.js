@@ -6,7 +6,7 @@ let title = document.getElementById("title")
 let signtype = 1;
 
 signinBtn.onclick = function(){
-    nameField.style.maxHeight = "0";
+    nameField.style.maxHeight = "60px";
     title.innerHTML = "EcoFLY - Sign In";
     signupBtn.classList.add("disable")
     signinBtn.classList.remove("disable")
@@ -31,7 +31,7 @@ submitBtn.onclick = function()
             "signtype":signtype
         })
         // The stuff we do here is so that the Python app receives the data from the website. Look at it, it's beautiful!!!!!!!!
-        xhr.open("POST","/LogIn",true);
+        xhr.open("POST","/Authenticate",true);
         xhr.setRequestHeader("Content-Type", "application/json");
         console.log(json);
         xhr.send(json);

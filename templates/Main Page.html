@@ -19,6 +19,8 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js" defer></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js" defer></script>
     <script src="../static/Main%20Page%20Templates/js/main.js" defer></script>
+    <!-- this should be initializing the google map api -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3uRU5fqViOJRqU5LOZ4uYLcq6COxqQfU &callback=initMap"></script>
     <title>Eco-Fly</title>
 </head>
 
@@ -66,7 +68,7 @@
             </div>
             <div id = "map">
                 <!-- add map in js -->
-                <img class="responsive-img" src="../static/Main%20Page%20Templates/img/finland.svg" alt="map of finland">
+                <div id="googleMap" style="width:100%;height:400px;"></div>
             </div>
                 </section>
             </div>

@@ -5,7 +5,7 @@ from Database import (get_continent_list, get_airport_list,
                       db_query,getcountry,getcoordinates, get_airport_name_from_ident)
 from geopy import distance
 from random import randint, random, choice
-from Player import Player
+from Player_Data import Player
 from Quest import CheckQuest
 connection = mysql.connector.connect(
          host='127.0.0.1',

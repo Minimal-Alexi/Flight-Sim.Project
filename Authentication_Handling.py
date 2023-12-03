@@ -11,6 +11,17 @@ connection = mysql.connector.connect(
          )
 cursor = connection.cursor()
 
+
+def UserLogin(name, password):
+    sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}' AND PASSWORD = '{hashing(password)}'"
+    result = db_query(sql, cursor)
+    if len(result)==1:
+        print("User succesfully logged in.")
+        return True
+    else:
+        print("User didn't log in.")
+        return False
+
 def UserReg(name,password):
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}'"
     result = db_query(sql, cursor)
@@ -26,8 +37,8 @@ def UserReg(name,password):
         sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}')"
         db_query(sql, cursor)
         print("Registration succesfull!")
+        UserLogin(name,password)
         return True
     else:
         print("Registration failed. User already exists.")
         return False
-
