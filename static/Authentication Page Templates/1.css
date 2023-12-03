@@ -12,7 +12,7 @@ body {
 .container {
     width: 100vw;
     height: 100vh;
-    background-image: url("/static/templates/dark-green-vintage-background-1.jpg");
+    background-image: url("dark-green-vintage-background-1.jpg");
     background-size: cover;
     display: flex;
     justify-content: center;

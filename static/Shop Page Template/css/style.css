@@ -63,7 +63,7 @@ header img {
 }
 
 .page-header {
-    background-image: url('../img/dark-green-vintage-background.jpg');
+    background-image: url('../../Main Page Templates/img/dark-green-vintage-background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     padding: 0;
@@ -164,7 +164,7 @@ footer {
 }
 
 .goal {
-    background-image: url("../img/splatter.png");
+    background-image: url("../../Main Page Templates/img/splatter.png");
     background-size: contain;
     background-repeat: no-repeat;
     padding: 9rem 7rem;

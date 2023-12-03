@@ -1,6 +1,6 @@
 from flask import Flask,request,render_template,Response
 import json
-from Registry_Handling import UserReg
+from Authentication_Handling import UserReg
 app = Flask(__name__)
 @app.route('/LogIn', methods = ["GET","POST"])
 def login():

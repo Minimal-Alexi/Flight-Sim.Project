@@ -37,7 +37,7 @@ header img {
 }
 
 .page-header {
-    background-image: url('../img/dark-green-vintage-background.jpg');
+    background-image: url('../../Main Page Templates/img/dark-green-vintage-background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     padding: 0;
@@ -53,7 +53,7 @@ nav {
 }
 
 .back-button {
-    background-image: url("../img/dark-green-vintage-background.jpg");
+    background-image: url("../../Main Page Templates/img/dark-green-vintage-background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-color: var(--dark-green);
@@ -81,7 +81,7 @@ nav {
 }
 
 .item-card {
-    background-image: url("../img/pngtree-aged-paper-space-picture-image_13250362.png");
+    background-image: url("../../Main Page Templates/img/pngtree-aged-paper-space-picture-image_13250362.png");
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

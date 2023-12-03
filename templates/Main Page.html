@@ -12,14 +12,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Graduate&family=Special+Elite&display=swap" rel="stylesheet">
     <!-- link to style sheets -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"/>
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../static/Shop%20Page%20Template/css/style.css" rel="stylesheet">
     <!-- add an icon pic in the tab-->
     <link rel="icon" href="/img/tab_logo.png" type="image/png">
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" defer></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js" defer></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js" defer></script>
-    <script src="js/main.js" defer></script>
-    <!-- Need to discuss what the game title should be named -->
+    <script src="../static/Main%20Page%20Templates/js/main.js" defer></script>
     <title>Eco-Fly</title>
 </head>
 
@@ -27,7 +26,7 @@
     <main class="flex-wrap">
         <div class="container">
             <header class="page-header">
-                <img src="img/airplane_logo.png" alt="Header Image">
+                <img src="../static/Main%20Page%20Templates/img/airplane_logo.png" alt="Header Image">
                 <h1 class="page-title">
                     <ion-icon name="airplane-outline"></ion-icon>&nbsp;Eco-Fly&nbsp;
                     <ion-icon name="airplane-outline"></ion-icon>
@@ -35,13 +34,13 @@
                 <nav>
                     <ul class="flex-wrap space-evenly">
                         <li>
-                            <a class="button button-white" href="index.html">Quest</a>
+                            <a class="button button-white" href="Main Page.html">Quest</a>
                         </li>
                         <li>
-                            <a class="button button-white" href="index.html">Shop</a>
+                            <a class="button button-white" href="Main Page.html">Shop</a>
                         </li>
                         <li>
-                            <a class="button button-white" href="about.html">Help</a>
+                            <a class="button button-white" href="../game-HTML/about.html">Help</a>
                         </li>
                     </ul>
                 </nav>
@@ -59,14 +58,15 @@
                             <td>Fuel: <span id="fuel">1000</span>L</td>
                             <td>CO2 Budget: <span id="budget">1000</span>kg</td>
                             <td>Money: <span id="money">1000</span>euro</td>
-                            <td>Log Out<span id="logout"></span></td>
+                            <!-- this last element is a button -->
+                            <td><button id="logoutButton">Log Out</button></td>
                         </tr>
                     </table>
                 </section>
             </div>
             <div id = "map">
                 <!-- add map in js -->
-                <img class="responsive-img" src="img/finland.svg" alt="map of finland">
+                <img class="responsive-img" src="../static/Main%20Page%20Templates/img/finland.svg" alt="map of finland">
             </div>
                 </section>
             </div>
@@ -75,10 +75,10 @@
     <footer class="page-footer">
         <p>This game is made by group 3. All rights reserved ©2023 Software 2 Group B Copyright Metropolia UAS</p>
     </footer>
+    <!-- This is hidden and become visible when a goal is reached in js -->
     <div class="goal hide">
         <h2>Cooooooool!!!</h2>
         <p>
-            <!-- This can be replaced with specific goal reached in js -->
             <span id="goal-txt">Goals reached!!!</span>
         </p>
     </div>
