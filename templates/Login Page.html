@@ -12,17 +12,17 @@
     <div class="container">
         <div class="form-box">
             <h1 id="title">EcoFLY - Sign Up</h1>
-            <form action = "{{ url_for("login")}}" method = "post">
+            <form>
                 <div class="input-group">
                     <div class="input-field" id="nameField">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" placeholder="Name" name="username" id="username" required>
+                        <input type="text" placeholder="Name" id="username" required>
                     </div>
+
                     <div class="input-field">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="text" placeholder="Password" name="password" id="password" required>
+                        <input type="password" placeholder="Password" id="password" autocomplete="off" required>
                     </div>
-                    <p>Lost Password<a href="#">Click Here!</a></p>
                 </div>
                 <div class="btn-field">
                     <button type="button" id="signupBtn">Sign up</button>
