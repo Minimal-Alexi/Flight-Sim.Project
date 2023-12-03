@@ -36,3 +36,16 @@ submitBtn.onclick = function()
         console.log(json);
         xhr.send(json);
 }
+fetch('http://localhost:5000/Authenticate')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });

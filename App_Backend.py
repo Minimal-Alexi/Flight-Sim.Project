@@ -1,7 +1,9 @@
-from flask import Flask,request,render_template,Response
+from flask import Flask,request,render_template,Response,jsonify
+from flask_cors import CORS
 import json
 from Authentication_Handling import UserReg,UserLogin
 app = Flask(__name__)
+CORS(app)
 @app.route('/Authenticate', methods = ["GET","POST"])
 def login():
     if request.is_json:
@@ -23,9 +25,7 @@ def login():
                         "status": 400
                     }
                     status = 400
-                json_response = json.dumps(response)
-                http_response = Response(response=json_response, status=status, mimetype="application/json")
-                return http_response
+                return jsonify(response), status
             elif signtype == 2:
                 if UserLogin(username,password) == True:
                     response = {
@@ -39,17 +39,14 @@ def login():
                         "status": 400
                     }
                     status = 400
-                json_response = json.dumps(response)
-                http_response = Response(response=json_response, status=status, mimetype="application/json")
-                return http_response
+                return jsonify(response), status
         except ValueError:
             response ={
                     "message": "Invalid user info added",
                     "status": 400
                 }
-            json_response = json.dumps(response)
-            http_response = Response(response=json_response, status=400, mimetype="application/json")
-            return http_response
+            status = 400
+            return jsonify(response), status
 
     return render_template('Login Page.html')
 
