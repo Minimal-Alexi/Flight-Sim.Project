@@ -1,0 +1,115 @@
+:root {
+    --dark-green: rgb(43, 52, 37);
+    --light-green: #BCCCA1;
+    --light-grey: rgb(128, 128, 128);
+    --dark-grey: rgb(65, 65, 65)
+}
+
+body {
+    font-family: 'Graduate', Baskerville, Georgia, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background-color: #efe3d2;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #2b3425;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+header img {
+    width: 20%;
+    height: 20%;
+    display: block;
+    margin: 0 auto;
+}
+
+.page-header, .page-footer{
+    background-color: var(--dark-green);
+    color: var(--light-green);
+    font-family: 'Graduate', Baskerville, Georgia, sans-serif;
+}
+
+.page-header {
+    background-image: url('../img/dark-green-vintage-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
+
+.page-title {
+    text-align: center;
+    margin: 0;
+}
+
+nav {
+    padding: 1em;
+}
+
+.back-button {
+    background-image: url("../img/dark-green-vintage-background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: var(--dark-green);
+    border: none;
+    color: var(--light-green);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+
+.item-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 1em;
+}
+
+.item-card {
+    background-image: url("../img/pngtree-aged-paper-space-picture-image_13250362.png");
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    margin: 1em;
+    text-align: center;
+    width: 200px;
+    position: relative;
+    flex-direction: column;
+}
+
+.item-card img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.item-card button {
+    width: 100px;
+    margin-top: auto;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    font-size: 16px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
