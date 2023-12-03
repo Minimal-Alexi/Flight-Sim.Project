@@ -19,6 +19,7 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js" defer></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js" defer></script>
     <script src="js/main.js" defer></script>
+    <!-- Need to discuss what the game title should be named -->
     <title>Eco-Fly</title>
 </head>
 
@@ -58,8 +59,7 @@
                             <td>Fuel: <span id="fuel">1000</span>L</td>
                             <td>CO2 Budget: <span id="budget">1000</span>kg</td>
                             <td>Money: <span id="money">1000</span>euro</td>
-                            <!-- this last element is a button -->
-                            <td><button id="logoutButton">Log Out</button></td>
+                            <td>Log Out<span id="logout"></span></td>
                         </tr>
                     </table>
                 </section>
@@ -75,10 +75,10 @@
     <footer class="page-footer">
         <p>This game is made by group 3. All rights reserved ©2023 Software 2 Group B Copyright Metropolia UAS</p>
     </footer>
-    <!-- This is hidden and become visible when a goal is reached in js -->
     <div class="goal hide">
         <h2>Cooooooool!!!</h2>
         <p>
+            <!-- This can be replaced with specific goal reached in js -->
             <span id="goal-txt">Goals reached!!!</span>
         </p>
     </div>
