@@ -1,6 +1,7 @@
 from Password_Management import hashing
 import mysql.connector
 from Database import (db_query)
+from Player_Data import Player
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -11,17 +12,22 @@ connection = mysql.connector.connect(
          )
 cursor = connection.cursor()
 
-
+#Puts the user data into the class system for easier manipulation.~Min/Alex
 def UserLogin(name, password):
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}' AND PASSWORD = '{hashing(password)}'"
     result = db_query(sql, cursor)
     if len(result)==1:
         print("User succesfully logged in.")
-        return True
+        sql = f"SELECT ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,QUEST,FUELTANK,CARGOCAPACITY FROM GAME WHERE SCREEN_NAME = '{name}'"
+        result = db_query(sql,cursor)
+        result = result[0]
+        user = Player(result[0],result[3],result[4],result[2],result[5],result[1],result[6],result[9],result[8],result[7])
+        user.get_Player_data()
+        return True,user
     else:
         print("User didn't log in.")
-        return False
-
+        return False,None
+#UserReg picks the data from the form, checks if it's valid, and adds it to the DB.~Min/Alex
 def UserReg(name,password):
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}'"
     result = db_query(sql, cursor)
@@ -34,11 +40,11 @@ def UserReg(name,password):
             maxi = maxi + 1
         else:
             maxi = 1
-        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}')"
+        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','[False, False]','False','False')"
         db_query(sql, cursor)
         print("Registration succesfull!")
-        UserLogin(name,password)
-        return True
+        none,user = UserLogin(name,password)
+        return True,user
     else:
         print("Registration failed. User already exists.")
-        return False
+        return False,None

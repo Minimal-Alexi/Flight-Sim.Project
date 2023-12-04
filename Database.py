@@ -1,6 +1,6 @@
 # All MariaDB interactions go here
 
-# takes sql text for query and cursor and returns result of query
+# takes sql text for query and cursor and returns result of query ~Ashifa
 def db_query(sql, cursor):
     cursor.execute(sql)
     return cursor.fetchall()
@@ -10,7 +10,7 @@ def db_query(sql, cursor):
 #     cursor.execute(f"update game set location = '{location}' where id = '{id}'")
 
 
-# gets user location from the db
+# gets user location from the db ~Ashifa
 def get_user_location(id, cursor):
     return db_query(f"select game.location, airport.name "
                     f"from game, airport "
@@ -18,7 +18,7 @@ def get_user_location(id, cursor):
                     f"and game.location = airport.ident", cursor)[0]
 
 
-# gets user local airport from db
+# gets user local airport from db ~Ashifa
 def get_local_airport(id, cursor):
     return db_query(f"SELECT NAME "
                     f"FROM AIRPORT "
@@ -37,7 +37,7 @@ def get_airport_name_from_ident(ident, cursor):
                     f"FROM airport "
                     f"WHERE ident = '{ident}'", cursor)[0][0]
 
-# takes continent code as a string and returns the full name of the continent
+# takes continent code as a string and returns the full name of the continent ~Ashifa
 def get_continent(continent_code):
     continents = {"EU": "Europe",
                   "AS": "Asia",
@@ -49,12 +49,12 @@ def get_continent(continent_code):
     return continents[continent_code]
 
 
-# Gets continent list from the db
+# Gets continent list from the db ~Ashifa
 def get_continent_list(cursor):
     return db_query("select distinct continent from airport", cursor)
 
 
-# Takes continent code and returns list of countries in that continent
+# Takes continent code and returns list of countries in that continent ~Ashifa
 def get_country_list(cursor, continent):
     return db_query(f"select distinct country.name "
                     f"from country, airport "
@@ -64,7 +64,7 @@ def get_country_list(cursor, continent):
                     f"ORDER BY COUNTRY.NAME", cursor)
 
 
-# Takes country name and returns list of distinct airport types
+# Takes country name and returns list of distinct airport types ~Ashifa
 def get_intl_airport_type_list(cursor, country):
     return db_query(f"select distinct type "
                     f"from airport, country "
@@ -72,7 +72,7 @@ def get_intl_airport_type_list(cursor, country):
                     f"and country.name = '{country}'"
                     f"and type = 'large_airport'", cursor)
 
-# Takes country name and returns list of distinct airport types
+# Takes country name and returns list of distinct airport types ~Ashifa
 def get_local_airport_type_list(cursor, country):
     return db_query(f"select distinct type "
                     f"from airport, country "
@@ -89,7 +89,7 @@ def get_airport_list(cursor, country, airport_type):
                     f"ORDER BY airport.name", cursor)
 
 
-#This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere.
+#This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere. ~Ashifa
 def update_player(cursor,user):
     sql = f"UPDATE GAME SET CO2_BUDGET = {user.CO2_Budget}, MONEY = {user.Money}, LOCATION = '{user.location}', FUEL = {user.Fuel}, FUEL_EFFICIENCY = {user.Fuel_Efficiency} WHERE {user.databaseID} = ID"
     db_query(sql,cursor)
