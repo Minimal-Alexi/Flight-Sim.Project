@@ -16,7 +16,7 @@ def login():
                 if UserReg(username,password) == True:
                     response = {
                         "message": "Account succesfully created!",
-                        "status": 200
+                        "status": 200,
                     }
                     status = 200
                 else:

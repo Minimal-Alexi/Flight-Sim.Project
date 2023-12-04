@@ -31,21 +31,24 @@ submitBtn.onclick = function()
             "signtype":signtype
         })
         // The stuff we do here is so that the Python app receives the data from the website. Look at it, it's beautiful!!!!!!!!
-        xhr.open("POST","/Authenticate",true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        console.log(json);
-        xhr.send(json);
-}
-fetch('http://localhost:5000/Authenticate')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    xhr.open("POST", "/Authenticate", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    console.log(json);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.status == 200) {
+                // Successful response from the server
+                let response = JSON.parse(xhr.responseText);
+                console.log(response);
+                // Handle the response as needed
+            } else {
+                // Error response from the server
+                console.error("Error:", xhr.status, xhr.statusText);
+                // Handle the error as needed
+            }
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
+    };
+
+    xhr.send(json);
+}
