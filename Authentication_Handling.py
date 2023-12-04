@@ -1,6 +1,7 @@
 from Password_Management import hashing
 import mysql.connector
 from Database import (db_query)
+from Player_Data import Player
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -17,12 +18,14 @@ def UserLogin(name, password):
     result = db_query(sql, cursor)
     if len(result)==1:
         print("User succesfully logged in.")
+        user = Player()
         return True
     else:
         print("User didn't log in.")
         return False
 
 def UserReg(name,password):
+    #This checks if the username already exists.
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}'"
     result = db_query(sql, cursor)
     if len(result)==0:

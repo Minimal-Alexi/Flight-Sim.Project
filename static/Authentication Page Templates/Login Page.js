@@ -34,7 +34,7 @@ submitBtn.onclick = function()
     xhr.open("POST", "/Authenticate", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     console.log(json);
-
+    // This should probably be our template for receiving requests from the server, please read it carefully.
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             if (xhr.status == 200) {
@@ -44,7 +44,7 @@ submitBtn.onclick = function()
                 // Handle the response as needed
             } else {
                 // Error response from the server
-                console.error("Error:", xhr.status, xhr.statusText);
+                console.error("Error:", xhr.status, xhr.responseText);
                 // Handle the error as needed
             }
         }
