@@ -2,7 +2,6 @@ from flask import Flask,request,render_template,Response,jsonify
 from flask_cors import CORS
 import json
 from Authentication_Handling import UserReg,UserLogin
-from Player_Data import Player
 app = Flask(__name__)
 CORS(app)
 @app.route('/Authenticate', methods = ["GET","POST"])
@@ -14,14 +13,12 @@ def login():
             password = json_user["password"]
             signtype = json_user["signtype"]
             if signtype == 1:
-                result = UserReg(username,password)
-                if result == True:
+                if UserReg(username,password) == True:
                     response = {
                         "message": "Account succesfully created!",
                         "status": 200,
                     }
                     status = 200
-
                 else:
                     response = {
                         "message": "Invalid username info added. Username already exists",

@@ -1,10 +1,8 @@
-from flask import jsonify
-#Ideally, we could use this to make a multiplayer browser game. Sadly, we live in reality.
+
 class Player:
-    def __init__(self,DB_ID,name,location,CO2_Budget,Fuel,Money,BoughtExtraCash,BoughtFuelTank):
+    def __init__(self,DB_ID,LOC,CO2_Budget,Fuel,Money,BoughtExtraCash,BoughtFuelTank):
         self.databaseID = DB_ID
-        self.name = name
-        self.location = location
+        self.location = LOC
         self.CO2_Budget = CO2_Budget
         self.Fuel = Fuel
         self.Money = Money
@@ -30,16 +28,3 @@ class Player:
         self.Money = new_money
         cursor.execute(f"update game set money = {new_money} where id = '{self.databaseID}'")
 
-    def get_JSON(self):
-        response = {
-            "Username":self.name,
-            "Database_ID": self.databaseID,
-            "location": self.location,
-            "CO2_Budget": self.CO2_Budget,
-            "Fuel":self.Fuel,
-            "Money":self.Money,
-            "Fuel_Efficiency":self.Fuel_Efficiency,
-            "Quest List":self.quest,
-            "BoughtFuelTank":self.BoughtFuelTank,
-            "BoughtExtraCash":self.BoughtExtraCash
-        }
