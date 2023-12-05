@@ -41,7 +41,6 @@ def login():
                     status = 200
                     #This next bit will send the JSON data over to the Main Page for printing.
                     response.update(user.get_JSON_data())
-                    print(user.get_JSON_data(),response)
                 else:
                     response = {
                         "message": "Invalid username info added. Wrong password or wrong username. Try again.",
