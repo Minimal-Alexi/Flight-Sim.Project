@@ -22,6 +22,7 @@ def login():
                         "message": "Account succesfully created!",
                         "status": 200,
                     }
+                    # This next bit will send the JSON data over to the Main Page for printing.
                     response.update(user.get_JSON_data())
                     status = 200
                 else:

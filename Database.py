@@ -88,6 +88,15 @@ def get_airport_list(cursor, country, airport_type):
                     f"and airport.type = '{airport_type}'"
                     f"ORDER BY airport.name", cursor)
 
+def get_local_airport_list(cursor, country):
+    return db_query(f"select airport.name, airport.ident,airport.LATITUDE_DEG,airport.LONGITUDE_DEG "
+                    f"from airport, country "
+                    f"where airport.iso_country = country.iso_country "
+                    f"and country.name = '{country}'"
+                    f"and (airport.type = 'medium_airport' or airport.type = 'large_airport')"
+                    f"ORDER BY airport.name", cursor)
+
+
 
 #This function updates all the players current stats and positions to the database, extremely useful. We should post it up everywhere. ~Ashifa
 def update_player(cursor,user):
@@ -97,10 +106,12 @@ def getairport(IDENT,cursor):
     name = (db_query(f"SELECT NAME FROM AIRPORT WHERE IDENT = '{IDENT}'",cursor))[0]
     return name
 def getcountry(cursor,name):
-    country = db_query(f"SELECT COUNTRY.NAME FROM AIRPORT,COUNTRY WHERE AIRPORT.IDENT = '{name}' AND AIRPORT.ISO_COUNTRY = COUNTRY.ISO_COUNTRY",cursor)[0]
+    country = db_query(f"SELECT COUNTRY.NAME FROM AIRPORT,COUNTRY WHERE AIRPORT.IDENT = '{name}' AND AIRPORT.ISO_COUNTRY = COUNTRY.ISO_COUNTRY",cursor)[0][0]
     return country
 def getcoordinates(cursor,ident):
-    return db_query(f"SELECT LATITUDE_DEG, LONGITUDE_DEG FROM AIRPORT WHERE IDENT = '{ident}'",cursor)
+    result = db_query(f"SELECT LATITUDE_DEG, LONGITUDE_DEG FROM AIRPORT WHERE IDENT = '{ident}'",cursor)
+    result = result[0]
+    return result
 def checklarge(cursor,ident):
     (result, )= db_query(f"SELECT TYPE FROM AIRPORT WHERE IDENT = '{ident}'",cursor)[0]
     if result == "large_airport":
