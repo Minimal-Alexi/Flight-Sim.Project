@@ -27,40 +27,64 @@
                 </h1>
     </header>
 
+    <script>
+        function purchaseItem(item) {
+        // Make an AJAX request to the server to handle the purchase
+        fetch(`/purchase?item=${encodeURIComponent(item)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quantity: 1 }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`Purchase of ${item} successful. Your new balance: ${data.user.Money}. You have ${data.user.CO2_Budget} carbon credits left.`);
+            } else {
+                alert('Purchase failed. Insufficient funds or invalid item selection.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    </script>
+
     <section class="item-container">
         <div class="item-card">
             <img src="../static/Main%20Page%20Templates/img/756f9580cde54db652ea3aaf1f5ab4a6.gif" alt="Item 1">
             <h2>Item 1</h2>
             <p>+5km/l Fuel Efficiency</p>
-            <button>Equip</button>
+            <button onclick="purchaseItem('Item 1')">Equip</button>
         </div>
 
         <div class="item-card">
             <img src="../static/Main%20Page%20Templates/img/istockphoto-1406084400-612x612.jpeg" alt="Item 2">
             <h2>Item 2</h2>
             <p>Refueling Services</p>
-            <button>Equip</button>
+            <button onclick="purchaseItem('Item 2')">Equip</button>
         </div>
 
         <div class="item-card">
             <img src="../static/Main%20Page%20Templates/img/SustainableFuel-1097x731.webp" alt="Item 3">
             <h2>Item 3</h2>
             <p>Environmental-Friendly Refueling Services</p>
-            <button>Equip</button>
+            <button onclick="purchaseItem('Item 3')">Equip</button>
         </div>
 
         <div class="item-card">
             <img src="../static/Main%20Page%20Templates/img/carrier.webp" alt="Item 4">
             <h2>Item 4</h2>
             <p>One-Time Extra Cargo capacity</p>
-            <button>Equip</button>
+            <button onclick="purchaseItem('Item 4')">Equip</button>
         </div>
 
         <div class="item-card">
             <img src="../static/Main%20Page%20Templates/img/Screen-Shot-2023-06-01-at-8.58.06-AM.png.webp" alt="Item 5">
             <h2>Item 5</h2>
             <p>One-Time Fuel Drop Tanks</p>
-            <button>Equip</button>
+            <button onclick="purchaseItem('Item 5')">Equip</button>
         </div>
     </section>
 

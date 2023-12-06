@@ -182,6 +182,22 @@ def NewUser():
         print("Wrong choice. Please enter either 1 or 2.")
         NewUser()
 
+#Update the player data in database
+def update_player(cursor, user):
+
+    try:
+        cursor.execute("""
+            UPDATE players
+            SET money = %s, fuel_efficiency = %s, fuel = %s, bought_extra_cash = %s, bought_fuel_tank = %s
+            WHERE user_id = %s
+        """, (user.Money, user.Fuel_Efficiency, user.Fuel, user.BoughtExtraCash, user.BoughtFuelTank, user.user_id))
+
+        cursor.commit()
+
+        update_player_json(user)
+
+    except mysql.connector.Error as err:
+        print(f"Error updating player data in the database: {err}")
 
 
 

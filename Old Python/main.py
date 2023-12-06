@@ -1,4 +1,6 @@
 import mysql.connector
+import json
+from flask import Flask, request, jsonify
 from Database import ( update_player,get_country_from_ident,checklarge)
 from mainmenu_functions import (UserLog,UserReg,Goodbye,getairport,local_airport_fetcher,InternationalAirportFetcher,
                                 NewUser,check_end_goal,Win)
@@ -70,6 +72,109 @@ def Shop(user):
     stop = input()
     update_player(cursor,user)
     return True
+
+#Update the player data to json file
+def update_player_json(user):
+    with open('player_data.json', 'w') as json_file:
+        json.dump(user.__dict__, json_file)
+
+
+app = Flask(__name__)
+@app.route('/purchase', methods=['POST'])
+
+class Player:
+    def __init__(self, user_id, money, fuel_efficiency, fuel, bought_extra_cash, bought_fuel_tank):
+        self.user_id = user_id
+        self.Money = money
+        self.Fuel_Efficiency = fuel_efficiency
+        self.Fuel = fuel
+        self.BoughtExtraCash = bought_extra_cash
+        self.BoughtFuelTank = bought_fuel_tank
+
+def purchase_item():
+    user_data = request.get_json()
+    selected_item = request.args.get('item')
+
+    def purchase_item():
+        user_data = request.get_json()
+        selected_item = request.args.get('item')
+        quantity = user_data.get('quantity', 1)
+
+        if selected_item == "+5km/l Fuel Efficiency":
+            cost_money = 1000 * quantity
+            cost_co2 = 100 * quantity
+
+            if user.Money < cost_money:
+                return jsonify({'success': False, 'message': 'Insufficient funds'})
+
+            if user.CO2_Budget < cost_co2:
+                return jsonify({'success': False, 'message': 'Insufficient CO2 budget'})
+
+            user.Fuel_Efficiency += 5 * quantity
+            user.Money -= cost_money
+            user.CO2_Budget -= cost_co2
+
+        elif selected_item == "Refueling Services":
+            refuel_cost_money = (Refuel * 10) * quantity
+            refuel_cost_co2 = (Refuel * 10 + 500) * quantity
+
+            if user.Money < refuel_cost_money:
+                return jsonify({'success': False, 'message': 'Insufficient funds'})
+
+            if user.CO2_Budget < refuel_cost_co2:
+                return jsonify({'success': False, 'message': 'Insufficient CO2 budget'})
+
+            user.Fuel += Refuel
+            user.Money -= refuel_cost_money
+            user.CO2_Budget -= refuel_cost_co2
+
+        elif selected_item == "Environmental-Friendly Refueling Services":
+            refuel_cost_money = (Refuel * 10 + 500) * quantity
+            refuel_cost_co2 = (Refuel * 10) * quantity
+
+            if user.Money < refuel_cost_money:
+                return jsonify({'success': False, 'message': 'Insufficient funds'})
+
+            if user.CO2_Budget < refuel_cost_co2:
+                return jsonify({'success': False, 'message': 'Insufficient CO2 budget'})
+
+            user.Fuel += Refuel
+            user.Money -= refuel_cost_money
+            user.CO2_Budget -= refuel_cost_co2
+
+        elif selected_item == "One-Time Extra Cargo capacity":
+            cost_money = 200
+            cost_co2 = 250
+
+            if user.Money < cost_money:
+                return jsonify({'success': False, 'message': 'Insufficient funds'})
+
+            if user.CO2_Budget < cost_co2:
+                return jsonify({'success': False, 'message': 'Insufficient CO2 budget'})
+
+            user.BoughtExtraCash = True
+            user.Money -= cost_money
+            user.CO2_Budget -= cost_co2
+
+        elif selected_item == "One-Time Fuel Drop Tanks":
+            cost_money = 200
+            cost_co2 = 1000
+
+            if user.Money < cost_money:
+                return jsonify({'success': False, 'message': 'Insufficient funds'})
+
+            if user.CO2_Budget < cost_co2:
+                return jsonify({'success': False, 'message': 'Insufficient CO2 budget'})
+
+            user.BoughtExtraCash = True
+            user.Money -= cost_money
+            user.CO2_Budget -= cost_co2
+
+
+    return jsonify({'success': True, 'user': user.__dict__})
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 user = Player()
