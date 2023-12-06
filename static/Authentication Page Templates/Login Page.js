@@ -43,7 +43,7 @@ submitBtn.onclick = function()
                 let response = JSON.parse(Server_Request.responseText);
                 console.log(response);
                 // Handle the response as needed
-                sessionStorage.setItem('jsonData',JSON.stringify(response));
+                sessionStorage.setItem('userData',JSON.stringify(response));
                 window.location.href = '/Main';
             } else {
                 // Error response from the server
