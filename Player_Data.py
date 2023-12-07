@@ -1,4 +1,4 @@
-
+from Database import getairport,getcoordinates
 class Player:
     def __init__(self,database_id,location,username,CO2_Budget,Fuel,Money,Fuel_Efficiency,BoughtExtraCash,BoughtFuelTank,quests):
         self.databaseID = database_id
@@ -40,10 +40,14 @@ class Player:
         print(f"User quest is: {self.Quest}")
         print(f"User BoughtFuelTank is: {self.BoughtFuelTank}")
         print(f"User BoughtExtraCash is: {self.BoughtExtraCash}")
+    #I could probably make smaller batches of JSON data to be sent, but right now I am on a crunch. So let's just have everything ~Min/Alex.
     def get_JSON_data(self):
         response = {
             "databaseID":self.databaseID,
             "username":self.username,
+            "location_name":getairport(self.location),
+            "location_icao":self.location,
+            "location_coords":getcoordinates(self.location),
             "CO2_Budget":self.CO2_Budget,
             "Fuel":self.Fuel,
             "Money":self.Money,

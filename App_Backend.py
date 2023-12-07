@@ -1,12 +1,14 @@
 from flask import Flask,request,render_template,Response,jsonify
 from flask_cors import CORS
 import json
-from Authentication_Handling import UserReg,UserLogin
+from Authentication_Handling import UserReg,UserLogin,UserList
 from Player_Data import Player
 app = Flask(__name__)
 CORS(app)
 #There are a lot of printing functions in this app to ensure the console user understands how the app works.
 #Who knew console printing could be this useful? ~Min/Alex
+#The user variable isn't saved because it isn't stored globally. This list will save the users accessing the site.
+user_list = []
 @app.route('/Authenticate', methods = ["GET","POST"])
 def login():
     if request.is_json:
@@ -24,6 +26,7 @@ def login():
                     }
                     # This next bit will send the JSON data over to the Main Page for printing.
                     response.update(user.get_JSON_data())
+                    UserList(user,user_list)
                     status = 200
                 else:
                     response = {
@@ -42,6 +45,7 @@ def login():
                     status = 200
                     #This next bit will send the JSON data over to the Main Page for printing.
                     response.update(user.get_JSON_data())
+                    UserList(user, user_list)
                 else:
                     response = {
                         "message": "Invalid username info added. Wrong password or wrong username. Try again.",

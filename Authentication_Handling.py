@@ -48,3 +48,12 @@ def UserReg(name,password):
     else:
         print("Registration failed. User already exists.")
         return False,None
+
+def UserList(user,user_list):
+    for i in user_list:
+        if i.databaseID == user.databaseID:
+            print(f"Total user count is {len(user_list)}")
+            return False
+    user_list.append(user)
+    print(f"Total user count is {len(user_list)}")
+    return True
