@@ -60,10 +60,12 @@ def Intl_Airport_in_Range(user,target_continent):
                 counter = counter + 1
     return response
 
-
+"""
 start = time.time()
 result = Intl_Airport_in_Range(Player("TEST","KLAX","TEST","TEST",10000,"TEST",50,"TEST","TEST","TEST"),"NA")
 end = time.time()
 print(end-start)
 for i in result:
     print(i,result[i])
+    
+"""
