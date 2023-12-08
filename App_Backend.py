@@ -93,7 +93,8 @@ def main():
                     print(result)
                     return jsonify(result,200)
                 elif type_request == 3:
-                    destination = json_request['location']
+                    destination = json_request['destination']
+                    print(destination)
         except SystemExit:
             response ={
                     "message": "Client error",
