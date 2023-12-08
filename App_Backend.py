@@ -103,5 +103,23 @@ def main():
             return jsonify(response), status
     else:
         return render_template('Main Page.html')
+
+
+@app.route('/Shop', methods = ["GET","POST"])
+def shop():
+    if request.is_json:
+        try:
+            json_request = request.get_json()
+            user_ID = json_request['databaseID']
+            buying_ID = json_request['itemID']
+            user = user_search(user_ID)
+        except SystemExit:
+            response ={
+                    "message": "Client error",
+                    "status": 503
+                }
+            status = 503
+            return jsonify(response), status
+    return render_template('Shop.html')
 if __name__ == "__main__":
     app.run(use_reloader=True,host="127.0.0.1", port=5000, debug = True)
