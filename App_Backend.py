@@ -68,33 +68,40 @@ def login():
                 }
             status = 400
             return jsonify(response), status
-
-    return render_template('Login Page.html')
+    else:
+        return render_template('Login Page.html')
 
 @app.route('/Main', methods = ["GET","POST"])
 def main():
     if request.is_json:
-        json_request = request.get_json()
-        user_ID = json_request['databaseID']
-        user = user_search(user_ID)
-        if user != None:
-            # type request 1-2 means sending local/international airport data respectively. 3 means travelling somewhere.
-            type_request = json_request['type_request']
-            if type_request == 1:
-                print(f"Sent local airport list to user {user.username} ({user.databaseID})")
-                result = Local_Airport_in_Range(user)
-                print(result)
-                return jsonify(result,200)
-            elif type_request == 2:
-                print(f"Sent international airport list to user {user.username} ({user.databaseID})")
-                result = Intl_Airport_in_Range(user,"EU")
-                print(result)
-                return jsonify(result,200)
-            elif type_request == 3:
-                destination = json_request['location']
-                pass
-
-
-    return render_template('Main Page.html')
+        try:
+            json_request = request.get_json()
+            user_ID = json_request['databaseID']
+            user = user_search(user_ID)
+            if user != None:
+                # type request 1-2 means sending local/international airport data respectively. 3 means travelling somewhere.
+                type_request = json_request['type_request']
+                print(type_request)
+                if type_request == 1:
+                    print(f"Sent local airport list to user {user.username} ({user.databaseID})")
+                    result = Local_Airport_in_Range(user)
+                    print(result)
+                    return jsonify(result,200)
+                elif type_request == 2:
+                    print(f"Sent international airport list to user {user.username} ({user.databaseID})")
+                    result = Intl_Airport_in_Range(user,"EU")
+                    print(result)
+                    return jsonify(result,200)
+                elif type_request == 3:
+                    destination = json_request['location']
+        except SystemExit:
+            response ={
+                    "message": "Client error",
+                    "status": 503
+                }
+            status = 503
+            return jsonify(response), status
+    else:
+        return render_template('Main Page.html')
 if __name__ == "__main__":
     app.run(use_reloader=True,host="127.0.0.1", port=5000, debug = True)
