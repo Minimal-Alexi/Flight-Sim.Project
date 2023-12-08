@@ -1,4 +1,4 @@
-from Database import getairport,getcoordinates
+from Database import getairport,getcoordinates,db_query
 class Player:
     def __init__(self,database_id,location,username,CO2_Budget,Fuel,Money,Fuel_Efficiency,BoughtExtraCash,BoughtFuelTank,quests):
         self.databaseID = database_id
@@ -17,17 +17,28 @@ class Player:
         self.BoughtExtraCash = BoughtExtraCash
 
     # Takes new location (IDENT) and updates it for object and for database.~Ashifa
-    def update_location(self, new_location, cursor):
+    def update_location(self, new_location):
         self.location = new_location
-        cursor.execute(f"update game set location = '{new_location}' where id = '{self.databaseID}'")
+        db_query(f"update game set location = '{new_location}' where id = '{self.databaseID}'")
     # Updates the fuel for object and db.~Ashifa
-    def update_fuel(self, new_fuel, cursor):
+    def update_fuel(self, new_fuel):
         self.Fuel = new_fuel
-        cursor.execute(f"update game set fuel = {new_fuel} where id = '{self.databaseID}'")
+        db_query(f"update game set fuel = {new_fuel} where id = '{self.databaseID}'")
     # updates the money for object and db.~Ashifa
-    def update_money(self, new_money, cursor):
+    def update_money(self, new_money):
         self.Money = new_money
-        cursor.execute(f"update game set money = {new_money} where id = '{self.databaseID}'")
+        db_query(f"update game set money = {new_money} where id = '{self.databaseID}'")
+    def drive_player(self,new_location,distance):
+        int(self.Fuel-distance/self.Fuel_Efficiency)
+        self.location = new_location
+        if self.BoughtFuelTank == True and self.Fuel >= 500 and self.Fuel <= 600:
+            self.Fuel = self.Fuel - 500
+        elif self.BoughtFuelTank == True:
+            self.Fuel = self.Fuel - self.Fuel
+        self.BoughtFuelTank = False
+        print(f"User {self.databaseID} travelled to airport {getairport(self.location)} ({distance})")
+        self.update_location(self.location)
+        self.update_fuel(int(self.Fuel-distance/self.Fuel_Efficiency))
 
     def get_Player_data(self):
         print(f"User database ID is: {self.databaseID}")

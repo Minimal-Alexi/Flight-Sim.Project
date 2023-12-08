@@ -19,10 +19,15 @@ def Local_Airport_in_Range(user):
     result = get_local_airport_list(country)
     response = {}
     counter = 1
+    if user.BoughtFuelTank == True:
+        max_distance = 500
+    else:
+        max_distance = 0
+    max_distance = (max_distance + user.Fuel)*user.Fuel_Efficiency
     for i in result:
         dest_coords = (i[2],i[3])
         distance_coords = distance.distance(coords,dest_coords).km
-        if distance_coords <= user.Fuel*user.Fuel_Efficiency:
+        if distance_coords <= max_distance:
             item = {
                 "name":i[0],
                 "icao":i[1],

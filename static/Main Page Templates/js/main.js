@@ -41,7 +41,25 @@ function initMap() {
         infoWindow.open(map, Player_Pos_Marker);
     });
 }
-
+function PlayerMarkerUpdate()
+{
+    let user_location = player_data['location_coords'];
+    user_location = new google.maps.LatLng(user_location[0], user_location[1]);
+    Player_Pos_Marker.setPosition(user_location)
+    distance_circle.setMap(null);
+        distance_circle =
+        {
+            strokeColor: '#007BFF', // Color of the circle border
+            strokeOpacity: 0.8,      // Opacity of the circle border
+            strokeWeight: 2,         // Thickness of the circle border
+            fillColor: '#007BFF',   // Fill color of the circle
+            fillOpacity: 0.3,        // Opacity of the circle fill
+            map: map,                // Assuming 'map' is your Google Map instance
+            center: user_location, // Center the circle on the player's position
+            radius: player_data['Fuel'] * player_data['Fuel_Efficiency'] * 1000
+        };
+    distance_circle = new google.maps.Circle(distance_circle);
+}
 //Type 1 is local, type 2 is local.
 function CheckAirport(Type) {
     if (Type == "Local_Airports" && sessionStorage.getItem(Type) != null) {
@@ -53,7 +71,14 @@ function CheckAirport(Type) {
     }
     return false;
 }
-
+function DisplayStats()
+{
+    document.getElementById("username").textContent = player_data['username'];
+    document.getElementById("currentlocation").textContent = player_data['location_name'] + "(" + player_data['location_icao'] + ")";
+    document.getElementById("budget").textContent = player_data['CO2_Budget'];
+    document.getElementById("fuel").textContent = player_data['Fuel'];
+    document.getElementById("money").textContent = player_data['Money'];
+}
 function AirportFetcher(type) {
     return new Promise((resolve, reject) => {
         let Server_Request = new XMLHttpRequest();
@@ -83,14 +108,20 @@ function AirportFetcher(type) {
         Server_Request.send(Json);
     });
 }
-
-function TravelPost(ICAO) {
+function DeleteMarkers() {
+    for (let i = 0; i < Marker_List.length; i++) {
+        Marker_List[i].setMap(null);
+    }
+    Marker_List = [];
+}
+function TravelPost(ICAO,distance) {
 
         let Server_Request = new XMLHttpRequest();
         let json = JSON.stringify({
             databaseID:player_data['databaseID'],
             type_request:3,
             destination:ICAO,
+            distance:distance
         })
     Server_Request.open("POST", "/Main", true);
     Server_Request.setRequestHeader("Content-Type", "application/json");
@@ -100,7 +131,13 @@ function TravelPost(ICAO) {
                 // Successful response from the server
                 let response = JSON.parse(Server_Request.responseText);
                 console.log(response);
-                // Handle the response as needed
+                sessionStorage.clear();
+                sessionStorage.setItem('userData',JSON.stringify(response));
+                player_data = JSON.parse(sessionStorage.getItem('userData'))
+                DisplayStats()
+                DeleteMarkers()
+                PlayerMarkerUpdate()
+
             } else {
                 // Error response from the server
                 console.error("Error:", Server_Request.status, Server_Request.statusText);
@@ -109,13 +146,6 @@ function TravelPost(ICAO) {
         }
     };
     Server_Request.send(json);
-}
-
-function DeleteMarkers() {
-    for (let i = 0; i < Marker_List.length; i++) {
-        Marker_List[i].setMap(null);
-    }
-    Marker_List = [];
 }
 
 async function AsynchCreateMarker(type) {
@@ -132,6 +162,8 @@ async function AsynchCreateMarker(type) {
         let Marker = new google.maps.Marker({
                 position: new google.maps.LatLng(Values["latitude_deg"], Values["longitude_deg"]),
                 map,
+                icao:Values["icao"],
+                distance:Values["distance"]
             }
         )
 
@@ -144,8 +176,7 @@ async function AsynchCreateMarker(type) {
         )
         Marker.addListener('dblclick',function()
         {
-            const ICAO = Values['icao'];
-            TravelPost(ICAO);
+            TravelPost(Marker.icao,Marker.distance);
         }
         )
         Marker_List.push(Marker)
@@ -162,22 +193,32 @@ function CreateMarker(type) {
     const Airport_Data = JSON.parse(sessionStorage.getItem(type))[0];
     for (let i in Airport_Data) {
         Values = Airport_Data[i]
-        console.log(Values["latitude_deg"], Values["longitude_deg"]);
         let Marker = new google.maps.Marker({
                 position: new google.maps.LatLng(Values["latitude_deg"], Values["longitude_deg"]),
                 map,
+                icao:Values["icao"],
+                distance:Values["distance"]
             }
+        )
+
+        let InfoView = new google.maps.InfoWindow({
+            content: Values["name"] + " (" + Values["icao"] + ") " + Values["distance"] + "kms away."
+        });
+        Marker.addListener('click', function () {
+                InfoView.open(map, Marker);
+            }
+        )
+        Marker.addListener('dblclick',function()
+        {
+            TravelPost(Marker.icao,Marker.distance);
+        }
         )
         Marker_List.push(Marker)
     }
 }
 
 initMap()
-document.getElementById("username").textContent = player_data['username'];
-document.getElementById("currentlocation").textContent = player_data['location_name'] + "(" + player_data['location_icao'] + ")";
-document.getElementById("budget").textContent = player_data['CO2_Budget'];
-document.getElementById("fuel").textContent = player_data['Fuel'];
-document.getElementById("money").textContent = player_data['Money'];
+DisplayStats()
 
 LocalAirportButton.onclick = async function () {
     if (CheckAirport("Local_Airports") != true) {
