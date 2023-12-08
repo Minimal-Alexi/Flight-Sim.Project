@@ -113,6 +113,8 @@ def shop():
             user_ID = json_request['databaseID']
             buying_ID = json_request['itemID']
             user = user_search(user_ID)
+            result = print('Purchase successful')
+            return jsonify(result, 200)
         except SystemExit:
             response ={
                     "message": "Client error",
@@ -121,5 +123,33 @@ def shop():
             status = 503
             return jsonify(response), status
     return render_template('Shop.html')
+
+
+@app.route('/Quest', methods = ["GET","POST"])
+def quest():
+    if request.is_json:
+        try:
+            json_request = request.get_json()
+            user_ID = json_request['databaseID']
+            quest_id = json_request['questID']
+            user = user_search(user_ID)
+            result = print('Quest Started')
+            return jsonify(result, 200)
+        except SystemExit:
+            response ={
+                    "message": "Client error",
+                    "status": 503
+                }
+            status = 503
+            return jsonify(response), status
+    return render_template('Quest.html')
+
+
+@app.route('/Help', methods = ["GET", "POST"])
+def help():
+    return render_template('Help.html')
+
+
+
 if __name__ == "__main__":
     app.run(use_reloader=True,host="127.0.0.1", port=5000, debug = True)
