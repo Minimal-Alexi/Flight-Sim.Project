@@ -4,6 +4,7 @@ import json
 from Authentication_Handling import UserReg,UserLogin,UserList
 from Player_Data import Player
 from GoogleMaps_API_Feeder import Local_Airport_in_Range,Intl_Airport_in_Range
+from Shop_Handling import Shop
 app = Flask(__name__)
 CORS(app)
 #There are a lot of printing functions in this app to ensure the console user understands how the app works.
@@ -113,7 +114,8 @@ def shop():
             user_ID = json_request['databaseID']
             buying_ID = json_request['itemID']
             user = user_search(user_ID)
-            result = print('Purchase successful')
+            Shop(user,buying_ID)
+            result = user.get_JSON_data()
             return jsonify(result, 200)
         except SystemExit:
             response ={
