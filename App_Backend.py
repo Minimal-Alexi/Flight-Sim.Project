@@ -2,7 +2,9 @@ from flask import Flask,request,render_template,Response,jsonify
 from flask_cors import CORS
 from Authentication_Handling import UserReg,UserLogin,UserList
 from GoogleMaps_API_Feeder import Local_Airport_in_Range,Intl_Airport_in_Range
-from Shop_Handling import Shop,Fuel_Prices
+from Shop_Handling import shop, Fuel_Prices
+from Quest_Handling import quest
+
 app = Flask(__name__)
 CORS(app)
 #There are a lot of printing functions in this app to ensure the console user understands how the app works.
@@ -123,7 +125,7 @@ def shop_route():
                 return jsonify(result), 200
             else:
                 buying_ID = json_request['itemID']
-                purchase_status = Shop(user,buying_ID)
+                purchase_status = shop(user,buying_ID)
                 user_data = user.get_JSON_data()
                 purchase_status["user"] = user_data
                 return jsonify(purchase_status), 200
