@@ -1,11 +1,8 @@
 from flask import Flask,request,render_template,Response,jsonify
 from flask_cors import CORS
-import json
 from Authentication_Handling import UserReg,UserLogin,UserList
-from Player_Data import Player
 from GoogleMaps_API_Feeder import Local_Airport_in_Range,Intl_Airport_in_Range
-from Shop_Handling import shop
-from Quest_Handling import quest
+from Shop_Handling import Shop,Fuel_Prices
 app = Flask(__name__)
 CORS(app)
 #There are a lot of printing functions in this app to ensure the console user understands how the app works.
@@ -116,12 +113,20 @@ def shop_route():
     if request.is_json:
         try:
             json_request = request.get_json()
+            request_type = json_request['request_type']
             user_ID = json_request['databaseID']
-            buying_ID = json_request['itemID']
             user = user_search(user_ID)
-            shop(user,buying_ID)
-            result = user.get_JSON_data()
-            return jsonify(result, 200)
+            if request_type == 1:
+                result = Fuel_Prices(user)
+                print("Returning fuel prices: ")
+                print(result)
+                return jsonify(result), 200
+            else:
+                buying_ID = json_request['itemID']
+                purchase_status = Shop(user,buying_ID)
+                user_data = user.get_JSON_data()
+                purchase_status["user"] = user_data
+                return jsonify(purchase_status), 200
         except SystemExit:
             response ={
                     "message": "Client error",

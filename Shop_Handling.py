@@ -15,8 +15,8 @@ def shop(user, ItemID):
     # check if user has money
     if user.Money < selected_item["money_price"]:
         needed_money = selected_item["money_price"]-user.Money
-        response = {"status": f"Error", "message": "You don't have enough money. You need " + str(needed_money) + " euros", "purchase_status":0}
-        return response, 200
+        response = {"status": f"Error", "message": "You don't have enough money. You need " + str(needed_money) + " euros"}
+        return response
 
     # adjust player variables based on item
     user.Money -= selected_item["money_price"]
@@ -35,10 +35,19 @@ def shop(user, ItemID):
     response = {
         "status": "Success",
         "message": f"{selected_item['name']} was successfully purchased.",
-        "purchase_status": 1
     }
     user.update_all()
-    return response, 200
+    return response
+
+def Fuel_Prices(user):
+    refuel = 100 - user.Fuel
+    response = {
+            "Refuel$":refuel*10,
+            "RefuelCO2":refuel*10+500,
+            "Env-Refuel$":refuel*10+500,
+            "Env-RefuelCO2":refuel*10
+        }
+    return response
 """
 from random import randint
 from Player_Data import Player
