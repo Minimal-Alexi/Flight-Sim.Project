@@ -42,7 +42,8 @@ class Player:
                  f"CARGOCAPACITY = {int(self.BoughtExtraCash)} "
                  f"where id = '{self.databaseID}'")
     def Check_Quest(self,new_location):
-        country = get_country_from_ident(new_location)
+        country = get_country_from_ident(new_location)[0]
+        print(country)
         if self.Quest[0] != False:
             if country == self.Quest[0][3] and self.Quest[0] != False:
                 if self.Quest[0][2] < self.Quest[0][1]:
@@ -59,7 +60,7 @@ class Player:
                     self.Quest[1] = False
 
     def drive_player(self,new_location,distance):
-        self.update_fuel(self.Fuel-distance/self.Fuel_Efficiency)
+        self.update_fuel(int(self.Fuel-distance/self.Fuel_Efficiency))
         self.location = new_location
         if self.BoughtFuelTank == True and self.Fuel >= 250 and self.Fuel <= 350:
             self.update_fuel(self.Fuel - 250)
