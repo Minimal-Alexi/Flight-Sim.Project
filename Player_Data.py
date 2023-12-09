@@ -13,8 +13,8 @@ class Player:
         #b) [reward_for_quest,number_of_airports_to_go_to,goal_tracker,country_where_quest_was_picked_up]
         #The first item represents the local quests, the second item represents the international quests.~Min/Alex
         self.Quest = quests
-        self.BoughtFuelTank = BoughtFuelTank
-        self.BoughtExtraCash = BoughtExtraCash
+        self.BoughtFuelTank = bool(BoughtFuelTank)
+        self.BoughtExtraCash = bool(BoughtExtraCash)
 
     # Takes new location (IDENT) and updates it for object and for database.~Ashifa
     def update_location(self, new_location):
@@ -29,16 +29,21 @@ class Player:
         self.Money = new_money
         db_query(f"update game set money = {new_money} where id = '{self.databaseID}'")
     def drive_player(self,new_location,distance):
-        int(self.Fuel-distance/self.Fuel_Efficiency)
+        self.update_fuel(self.Fuel-distance/self.Fuel_Efficiency)
         self.location = new_location
-        if self.BoughtFuelTank == True and self.Fuel >= 500 and self.Fuel <= 600:
-            self.Fuel = self.Fuel - 500
+        if self.BoughtFuelTank == True and self.Fuel >= 250 and self.Fuel <= 350:
+            self.update_fuel(self.Fuel - 250)
         elif self.BoughtFuelTank == True:
-            self.Fuel = self.Fuel - self.Fuel
+            self.update_fuel(self.Fuel - self.Fuel)
         self.BoughtFuelTank = False
         print(f"User {self.databaseID} travelled to airport {getairport(self.location)} ({distance})")
         self.update_location(self.location)
-        self.update_fuel(int(self.Fuel-distance/self.Fuel_Efficiency))
+
+    def CheckType(self):
+        if isinstance(self.Quest,list):
+            print("Quest is list.")
+        else:
+            print("Quest not list")
 
     def get_Player_data(self):
         print(f"User database ID is: {self.databaseID}")
@@ -51,6 +56,8 @@ class Player:
         print(f"User quest is: {self.Quest}")
         print(f"User BoughtFuelTank is: {self.BoughtFuelTank}")
         print(f"User BoughtExtraCash is: {self.BoughtExtraCash}")
+        self.CheckType()
+
     #I could probably make smaller batches of JSON data to be sent, but right now I am on a crunch. So let's just have everything ~Min/Alex.
     def get_JSON_data(self):
         response = {

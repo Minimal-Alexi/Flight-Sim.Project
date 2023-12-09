@@ -3,7 +3,40 @@ let Player_Pos_Marker, player_data = JSON.parse(sessionStorage.getItem('userData
 const LocalAirportButton = document.getElementById("Local Airports Filter"),
     InternationalAirportButton = document.getElementById("International Airports Filter");
 
-
+function circle_maker()
+{
+        let user_location = player_data['location_coords'];
+        user_location = new google.maps.LatLng(user_location[0], user_location[1]);
+        if(player_data['BoughtFuelTank'] == true)
+    {
+            distance_circle =
+        {
+            strokeColor: '#007BFF', // Color of the circle border
+            strokeOpacity: 0.8,      // Opacity of the circle border
+            strokeWeight: 2,         // Thickness of the circle border
+            fillColor: '#007BFF',   // Fill color of the circle
+            fillOpacity: 0.3,        // Opacity of the circle fill
+            map: map,                // Assuming 'map' is your Google Map instance
+            center: user_location, // Center the circle on the player's position
+            radius: (player_data['Fuel'] + 250) * player_data['Fuel_Efficiency'] * 1000
+        };
+    }
+    else
+    {
+        distance_circle =
+        {
+            strokeColor: '#007BFF', // Color of the circle border
+            strokeOpacity: 0.8,      // Opacity of the circle border
+            strokeWeight: 2,         // Thickness of the circle border
+            fillColor: '#007BFF',   // Fill color of the circle
+            fillOpacity: 0.3,        // Opacity of the circle fill
+            map: map,                // Assuming 'map' is your Google Map instance
+            center: user_location, // Center the circle on the player's position
+            radius: player_data['Fuel'] * player_data['Fuel_Efficiency'] * 1000
+        };
+    }
+    distance_circle = new google.maps.Circle(distance_circle);
+}
 function initMap() {
     let user_location = player_data['location_coords'];
     user_location = new google.maps.LatLng(user_location[0], user_location[1]);
@@ -22,18 +55,7 @@ function initMap() {
             scaledSize: new google.maps.Size(50, 50), // Set the initial size of the icon
         }
     });
-    distance_circle =
-        {
-            strokeColor: '#007BFF', // Color of the circle border
-            strokeOpacity: 0.8,      // Opacity of the circle border
-            strokeWeight: 2,         // Thickness of the circle border
-            fillColor: '#007BFF',   // Fill color of the circle
-            fillOpacity: 0.3,        // Opacity of the circle fill
-            map: map,                // Assuming 'map' is your Google Map instance
-            center: user_location, // Center the circle on the player's position
-            radius: player_data['Fuel'] * player_data['Fuel_Efficiency'] * 1000
-        };
-    distance_circle = new google.maps.Circle(distance_circle);
+    circle_maker()
     let infoWindow = new google.maps.InfoWindow({
         content: "You are currently at this position." + " " + player_data['location_name'] + " (" + player_data['location_icao'] + ")"
     });
@@ -47,18 +69,7 @@ function PlayerMarkerUpdate()
     user_location = new google.maps.LatLng(user_location[0], user_location[1]);
     Player_Pos_Marker.setPosition(user_location)
     distance_circle.setMap(null);
-        distance_circle =
-        {
-            strokeColor: '#007BFF', // Color of the circle border
-            strokeOpacity: 0.8,      // Opacity of the circle border
-            strokeWeight: 2,         // Thickness of the circle border
-            fillColor: '#007BFF',   // Fill color of the circle
-            fillOpacity: 0.3,        // Opacity of the circle fill
-            map: map,                // Assuming 'map' is your Google Map instance
-            center: user_location, // Center the circle on the player's position
-            radius: player_data['Fuel'] * player_data['Fuel_Efficiency'] * 1000
-        };
-    distance_circle = new google.maps.Circle(distance_circle);
+    circle_maker()
 }
 //Type 1 is local, type 2 is local.
 function CheckAirport(Type) {

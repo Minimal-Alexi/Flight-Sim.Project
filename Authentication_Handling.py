@@ -40,7 +40,7 @@ def UserReg(name,password):
             maxi = maxi + 1
         else:
             maxi = 1
-        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','[False, False]','False','False')"
+        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','[False, False]', False ,False)"
         db_query(sql)
         print("Registration succesfull!")
         none,user = UserLogin(name,password)
