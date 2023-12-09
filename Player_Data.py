@@ -1,4 +1,5 @@
 from Database import getairport,getcoordinates,db_query
+import json
 class Player:
     def __init__(self,database_id,location,username,CO2_Budget,Fuel,Money,Fuel_Efficiency,BoughtExtraCash,BoughtFuelTank,quests):
         self.databaseID = database_id
@@ -30,12 +31,13 @@ class Player:
         db_query(f"update game set money = {new_money} where id = '{self.databaseID}'")
 
     def update_all(self):
+        Quest = json.dumps(self.Quest)
         db_query(f"update game set MONEY = {self.Money},"
                  f"CO2_BUDGET = {self.CO2_Budget},"
                  f"LOCATION = '{self.location}',"
                  f"FUEL = {self.Fuel},"
                  f"FUEL_EFFICIENCY = {self.Fuel_Efficiency},"
-                 f"QUEST = '{self.Quest}',"
+                 f"QUEST = '{Quest}',"
                  f"FUELTANK = {int(self.BoughtFuelTank)},"
                  f"CARGOCAPACITY = {int(self.BoughtExtraCash)} "
                  f"where id = '{self.databaseID}'")
@@ -50,12 +52,6 @@ class Player:
         print(f"User {self.databaseID} travelled to airport {getairport(self.location)} ({distance})")
         self.update_all()
 
-    def CheckType(self):
-        if isinstance(self.Quest,list):
-            print("Quest is list.")
-        else:
-            print("Quest not list")
-
     def get_Player_data(self):
         print(f"User database ID is: {self.databaseID}")
         print(f"User username is: {self.username}")
@@ -67,7 +63,6 @@ class Player:
         print(f"User quest is: {self.Quest}")
         print(f"User BoughtFuelTank is: {self.BoughtFuelTank}")
         print(f"User BoughtExtraCash is: {self.BoughtExtraCash}")
-        self.CheckType()
 
     #I could probably make smaller batches of JSON data to be sent, but right now I am on a crunch. So let's just have everything ~Min/Alex.
     def get_JSON_data(self):
