@@ -88,8 +88,10 @@ def main():
                     print(result)
                     return jsonify(result,200)
                 elif type_request == 2:
+                    target_continent = json_request['target_continent']
+                    print(target_continent)
                     print(f"Sent international airport list to user {user.username} ({user.databaseID})")
-                    result = Intl_Airport_in_Range(user,"EU")
+                    result = Intl_Airport_in_Range(user,target_continent)
                     print(result)
                     return jsonify(result,200)
                 elif type_request == 3:

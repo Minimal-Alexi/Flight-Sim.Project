@@ -28,6 +28,17 @@ class Player:
     def update_money(self, new_money):
         self.Money = new_money
         db_query(f"update game set money = {new_money} where id = '{self.databaseID}'")
+
+    def update_all(self):
+        db_query(f"update game set MONEY = {self.Money},"
+                 f"CO2_BUDGET = {self.CO2_Budget},"
+                 f"LOCATION = '{self.location}',"
+                 f"FUEL = {self.Fuel},"
+                 f"FUEL_EFFICIENCY = {self.Fuel_Efficiency},"
+                 f"QUEST = '{self.Quest}',"
+                 f"FUELTANK = {int(self.BoughtFuelTank)},"
+                 f"CARGOCAPACITY = {int(self.BoughtExtraCash)} "
+                 f"where id = '{self.databaseID}'")
     def drive_player(self,new_location,distance):
         self.update_fuel(self.Fuel-distance/self.Fuel_Efficiency)
         self.location = new_location
@@ -37,7 +48,7 @@ class Player:
             self.update_fuel(self.Fuel - self.Fuel)
         self.BoughtFuelTank = False
         print(f"User {self.databaseID} travelled to airport {getairport(self.location)} ({distance})")
-        self.update_location(self.location)
+        self.update_all()
 
     def CheckType(self):
         if isinstance(self.Quest,list):

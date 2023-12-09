@@ -37,6 +37,7 @@ def Shop(user, ItemID):
         "message": f"{selected_item['name']} was successfully purchased.",
         "purchase_status": 1
     }
+    user.update_all()
     return response, 200
 """
 from random import randint
