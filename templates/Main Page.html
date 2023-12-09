@@ -25,66 +25,80 @@
 </head>
 
 <body>
-    <main class="flex-wrap">
-        <div class="container">
-            <header class="page-header">
-                <img src="../static/Main%20Page%20Templates/img/airplane_logo.png" alt="Header Image">
-                <h1 class="page-title">
-                    <ion-icon name="airplane-outline"></ion-icon>&nbsp;Eco-Fly&nbsp;
-                    <ion-icon name="airplane-outline"></ion-icon>
-                </h1>
-                <nav>
-                    <ul class="flex-wrap space-evenly">
-                        <li>
-                            <a class="button button-white" href="Quest">Quest</a>
-                        </li>
-                        <li>
-                            <a class="button button-white" href="Shop">Shop</a>
-                        </li>
-                        <li>
-                            <a class="button button-white" href="Help">Help</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
+<main class="flex-wrap">
+    <div class="container">
+        <header class="page-header">
+            <img src="../static/Main%20Page%20Templates/img/airplane_logo.png" alt="Header Image">
+            <h1 class="page-title">
+                <ion-icon name="airplane-outline"></ion-icon>&nbsp;Eco-Fly&nbsp;
+                <ion-icon name="airplane-outline"></ion-icon>
+            </h1>
+            <nav>
+                <ul class="flex-wrap space-evenly">
+                    <li>
+                        <a class="button button-white" href="Quest">Quest</a>
+                    </li>
+                    <li>
+                        <a class="button button-white" href="Shop">Shop</a>
+                    </li>
+                    <li>
+                        <a class="button button-white" href="Help">Help</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
 
-            <div class="boxes playerStatus">
-                <section class="box">
-                    <header>
-                        <h2>Player Name: <span id="username">username</span></h2>
-                    </header>
-                    <table>
-                        <tr>
-                            <!-- select span element and change in js -->
-                            <td>Current Location: <span id="currentlocation"></span></td>
-                            <td>Fuel: <span id="fuel"></span>L</td>
-                            <td>CO2 Budget: <span id="budget"></span>kg</td>
-                            <td>Money: <span id="money"></span>euro</td>
-                            <!-- this last element is a button -->
-                            <td><button id="logoutButton">Log Out</button></td>
-                        </tr>
-                    </table>
-                </section>
-            </div>
-            <div id = "map">
-                <!-- add map in js -->
-                <div id="googleMap" style="width:100%;height:400px;"></div>
-                <button id = "Local Airports Filter">Local Airport Filter</button>
-                <button id = "International Airports Filter">International Airport Filter</button>
-            </div>
-                </section>
-            </div>
+        <div class="boxes playerStatus">
+            <section class="box">
+                <header>
+                    <h2>Player Name: <span id="username">username</span></h2>
+                </header>
+                <table>
+                    <tr>
+                        <!-- select span element and change in js -->
+                        <td>Current Location: <span id="currentlocation"></span></td>
+                        <td>Fuel: <span id="fuel"></span>L</td>
+                        <td>CO2 Budget: <span id="budget"></span> CO2 Tokens</td>
+                        <td>Money: <span id="money"></span>€</td>
+                        <!-- this last element is a button -->
+                        <td>
+                            <button id="logoutButton">Log Out</button>
+                        </td>
+                    </tr>
+                </table>
+            </section>
         </div>
-    </main>
-    <footer class="page-footer">
-        <p>This game is made by group 3. All rights reserved ©2023 Software 2 Group B Copyright Metropolia UAS</p>
-    </footer>
-    <!-- This is hidden and become visible when a goal is reached in js -->
-    <div class="goal hide">
-        <h2>Cooooooool!!!</h2>
-        <p>
-            <span id="goal-txt">Goals reached!!!</span>
-        </p>
+        <div id="map">
+            <!-- add map in js -->
+            <div id="googleMap" style="width:100%;height:700px;"></div>
+            <button id="Local Airports Filter">Local Airport Filter</button>
+            <button id="International Airports Filter">International Airport Filter</button>
+            <form>
+                <label for="continent">Select a continent:</label>
+                <select id="continent" name="continent">
+                    <option value="AF">Africa</option>
+                    <option value="AN">Antarctica</option>
+                    <option value="AS">Asia</option>
+                    <option value="EU">Europe</option>
+                    <option value="NA">North America</option>
+                    <option value="OC">Oceania</option>
+                    <option value="SA">South America</option>
+                </select>
+            </form>
+        </div>
+        </section>
     </div>
+    </div>
+</main>
+<footer class="page-footer">
+    <p>This game is made by group 3. All rights reserved ©2023 Software 2 Group B Copyright Metropolia UAS</p>
+</footer>
+<!-- This is hidden and become visible when a goal is reached in js -->
+<div class="goal hide">
+    <h2>Cooooooool!!!</h2>
+    <p>
+        <span id="goal-txt">Goals reached!!!</span>
+    </p>
+</div>
 </body>
 </html>

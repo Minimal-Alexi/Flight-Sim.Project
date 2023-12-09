@@ -83,20 +83,23 @@ def main():
             if user != None:
                 # type request 1-2 means sending local/international airport data respectively. 3 means travelling somewhere.
                 type_request = json_request['type_request']
-                print(type_request)
                 if type_request == 1:
                     print(f"Sent local airport list to user {user.username} ({user.databaseID})")
                     result = Local_Airport_in_Range(user)
                     print(result)
                     return jsonify(result,200)
                 elif type_request == 2:
+                    target_continent = json_request['target_continent']
+                    print(target_continent)
                     print(f"Sent international airport list to user {user.username} ({user.databaseID})")
-                    result = Intl_Airport_in_Range(user,"EU")
+                    result = Intl_Airport_in_Range(user,target_continent)
                     print(result)
                     return jsonify(result,200)
                 elif type_request == 3:
                     destination = json_request['destination']
-                    print(destination)
+                    distance = json_request['distance']
+                    user.drive_player(destination,distance)
+                    return jsonify(user.get_JSON_data()),200
         except SystemExit:
             response ={
                     "message": "Client error",
