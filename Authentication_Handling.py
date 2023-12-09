@@ -15,11 +15,11 @@ cursor = connection.cursor()
 #Puts the user data into the class system for easier manipulation.~Min/Alex
 def UserLogin(name, password):
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}' AND PASSWORD = '{hashing(password)}'"
-    result = db_query(sql, cursor)
+    result = db_query(sql)
     if len(result)==1:
         print("User succesfully logged in.")
         sql = f"SELECT ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,QUEST,FUELTANK,CARGOCAPACITY FROM GAME WHERE SCREEN_NAME = '{name}'"
-        result = db_query(sql,cursor)
+        result = db_query(sql)
         result = result[0]
         user = Player(result[0],result[3],result[4],result[2],result[5],result[1],result[6],result[9],result[8],result[7])
         user.get_Player_data()
@@ -30,18 +30,18 @@ def UserLogin(name, password):
 #UserReg picks the data from the form, checks if it's valid, and adds it to the DB.~Min/Alex
 def UserReg(name,password):
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}'"
-    result = db_query(sql, cursor)
+    result = db_query(sql)
     if len(result)==0:
         sql = f"SELECT max(id) FROM GAME"
-        result = db_query(sql, cursor)
+        result = db_query(sql)
         if cursor.rowcount == 1 and result[0] != (None,):
             (maxi,) = result[0]
             maxi = int(maxi)
             maxi = maxi + 1
         else:
             maxi = 1
-        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','[False, False]','False','False')"
-        db_query(sql, cursor)
+        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','[False, False]', False ,False)"
+        db_query(sql)
         print("Registration succesfull!")
         none,user = UserLogin(name,password)
         return True,user

@@ -195,3 +195,19 @@ footer {
 #weather td:first-child #weather td:nth-child(2) {
     border-right: #b0b0b0 1px solid;
 }
+
+form {
+    text-align: center;
+    font-size: 1.5em; /
+    border: 6px solid #ccc;
+    padding: 40px;
+    border-radius: 18px;
+}
+
+.form-box {
+    width: 100%;
+    max-width: 450px;
+    background: rgb(203, 192, 120);
+    padding: 50px 60px 70px;
+    text-align: center;
+}

@@ -4,6 +4,7 @@ import json
 from Authentication_Handling import UserReg,UserLogin,UserList
 from Player_Data import Player
 from GoogleMaps_API_Feeder import Local_Airport_in_Range,Intl_Airport_in_Range
+from Shop_Handling import Shop
 app = Flask(__name__)
 CORS(app)
 #There are a lot of printing functions in this app to ensure the console user understands how the app works.
@@ -68,33 +69,93 @@ def login():
                 }
             status = 400
             return jsonify(response), status
-
-    return render_template('Login Page.html')
+    else:
+        return render_template('Login Page.html')
 
 @app.route('/Main', methods = ["GET","POST"])
 def main():
     if request.is_json:
-        json_request = request.get_json()
-        user_ID = json_request['databaseID']
-        user = user_search(user_ID)
-        if user != None:
-            # type request 1-2 means sending local/international airport data respectively. 3 means travelling somewhere.
-            type_request = json_request['type_request']
-            if type_request == 1:
-                print(f"Sent local airport list to user {user.username} ({user.databaseID})")
-                result = Local_Airport_in_Range(user)
-                print(result)
-                return jsonify(result,200)
-            elif type_request == 2:
-                print(f"Sent international airport list to user {user.username} ({user.databaseID})")
-                result = Intl_Airport_in_Range(user,"EU")
-                print(result)
-                return jsonify(result,200)
-            elif type_request == 3:
-                destination = json_request['location']
-                pass
+        try:
+            json_request = request.get_json()
+            user_ID = json_request['databaseID']
+            user = user_search(user_ID)
+            if user != None:
+                # type request 1-2 means sending local/international airport data respectively. 3 means travelling somewhere.
+                type_request = json_request['type_request']
+                if type_request == 1:
+                    print(f"Sent local airport list to user {user.username} ({user.databaseID})")
+                    result = Local_Airport_in_Range(user)
+                    print(result)
+                    return jsonify(result,200)
+                elif type_request == 2:
+                    target_continent = json_request['target_continent']
+                    print(target_continent)
+                    print(f"Sent international airport list to user {user.username} ({user.databaseID})")
+                    result = Intl_Airport_in_Range(user,target_continent)
+                    print(result)
+                    return jsonify(result,200)
+                elif type_request == 3:
+                    destination = json_request['destination']
+                    distance = json_request['distance']
+                    user.drive_player(destination,distance)
+                    return jsonify(user.get_JSON_data()),200
+        except SystemExit:
+            response ={
+                    "message": "Client error",
+                    "status": 503
+                }
+            status = 503
+            return jsonify(response), status
+    else:
+        return render_template('Main Page.html')
 
 
-    return render_template('Main Page.html')
+@app.route('/Shop', methods = ["GET","POST"])
+def shop():
+    if request.is_json:
+        try:
+            json_request = request.get_json()
+            user_ID = json_request['databaseID']
+            buying_ID = json_request['itemID']
+            user = user_search(user_ID)
+            Shop(user,buying_ID)
+            result = user.get_JSON_data()
+            return jsonify(result, 200)
+        except SystemExit:
+            response ={
+                    "message": "Client error",
+                    "status": 503
+                }
+            status = 503
+            return jsonify(response), status
+    return render_template('Shop.html')
+
+
+@app.route('/Quest', methods = ["GET","POST"])
+def quest():
+    if request.is_json:
+        try:
+            json_request = request.get_json()
+            user_ID = json_request['databaseID']
+            quest_id = json_request['questID']
+            user = user_search(user_ID)
+            result = print('Quest Started')
+            return jsonify(result, 200)
+        except SystemExit:
+            response ={
+                    "message": "Client error",
+                    "status": 503
+                }
+            status = 503
+            return jsonify(response), status
+    return render_template('Quest.html')
+
+
+@app.route('/Help', methods = ["GET", "POST"])
+def help():
+    return render_template('Help.html')
+
+
+
 if __name__ == "__main__":
     app.run(use_reloader=True,host="127.0.0.1", port=5000, debug = True)

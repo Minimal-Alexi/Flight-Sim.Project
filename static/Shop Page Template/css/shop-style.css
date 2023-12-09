@@ -89,6 +89,7 @@ nav {
     margin: 1em;
     text-align: center;
     width: 200px;
+    height: 400px;
     position: relative;
     flex-direction: column;
 }

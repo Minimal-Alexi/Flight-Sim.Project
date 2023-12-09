@@ -1,4 +1,4 @@
-from Database import getairport,getcoordinates
+from Database import getairport,getcoordinates,db_query
 class Player:
     def __init__(self,database_id,location,username,CO2_Budget,Fuel,Money,Fuel_Efficiency,BoughtExtraCash,BoughtFuelTank,quests):
         self.databaseID = database_id
@@ -13,21 +13,48 @@ class Player:
         #b) [reward_for_quest,number_of_airports_to_go_to,goal_tracker,country_where_quest_was_picked_up]
         #The first item represents the local quests, the second item represents the international quests.~Min/Alex
         self.Quest = quests
-        self.BoughtFuelTank = BoughtFuelTank
-        self.BoughtExtraCash = BoughtExtraCash
+        self.BoughtFuelTank = bool(BoughtFuelTank)
+        self.BoughtExtraCash = bool(BoughtExtraCash)
 
     # Takes new location (IDENT) and updates it for object and for database.~Ashifa
-    def update_location(self, new_location, cursor):
+    def update_location(self, new_location):
         self.location = new_location
-        cursor.execute(f"update game set location = '{new_location}' where id = '{self.databaseID}'")
+        db_query(f"update game set location = '{new_location}' where id = '{self.databaseID}'")
     # Updates the fuel for object and db.~Ashifa
-    def update_fuel(self, new_fuel, cursor):
+    def update_fuel(self, new_fuel):
         self.Fuel = new_fuel
-        cursor.execute(f"update game set fuel = {new_fuel} where id = '{self.databaseID}'")
+        db_query(f"update game set fuel = {new_fuel} where id = '{self.databaseID}'")
     # updates the money for object and db.~Ashifa
-    def update_money(self, new_money, cursor):
+    def update_money(self, new_money):
         self.Money = new_money
-        cursor.execute(f"update game set money = {new_money} where id = '{self.databaseID}'")
+        db_query(f"update game set money = {new_money} where id = '{self.databaseID}'")
+
+    def update_all(self):
+        db_query(f"update game set MONEY = {self.Money},"
+                 f"CO2_BUDGET = {self.CO2_Budget},"
+                 f"LOCATION = '{self.location}',"
+                 f"FUEL = {self.Fuel},"
+                 f"FUEL_EFFICIENCY = {self.Fuel_Efficiency},"
+                 f"QUEST = '{self.Quest}',"
+                 f"FUELTANK = {int(self.BoughtFuelTank)},"
+                 f"CARGOCAPACITY = {int(self.BoughtExtraCash)} "
+                 f"where id = '{self.databaseID}'")
+    def drive_player(self,new_location,distance):
+        self.update_fuel(self.Fuel-distance/self.Fuel_Efficiency)
+        self.location = new_location
+        if self.BoughtFuelTank == True and self.Fuel >= 250 and self.Fuel <= 350:
+            self.update_fuel(self.Fuel - 250)
+        elif self.BoughtFuelTank == True:
+            self.update_fuel(self.Fuel - self.Fuel)
+        self.BoughtFuelTank = False
+        print(f"User {self.databaseID} travelled to airport {getairport(self.location)} ({distance})")
+        self.update_all()
+
+    def CheckType(self):
+        if isinstance(self.Quest,list):
+            print("Quest is list.")
+        else:
+            print("Quest not list")
 
     def get_Player_data(self):
         print(f"User database ID is: {self.databaseID}")
@@ -40,6 +67,8 @@ class Player:
         print(f"User quest is: {self.Quest}")
         print(f"User BoughtFuelTank is: {self.BoughtFuelTank}")
         print(f"User BoughtExtraCash is: {self.BoughtExtraCash}")
+        self.CheckType()
+
     #I could probably make smaller batches of JSON data to be sent, but right now I am on a crunch. So let's just have everything ~Min/Alex.
     def get_JSON_data(self):
         response = {
