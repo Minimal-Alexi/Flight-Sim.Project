@@ -147,9 +147,9 @@ def quest_route():
             user_ID = json_request['databaseID']
             quest_id = json_request['questID']
             user = user_search(user_ID)
-            quest(user, quest_id)
-            result = user.get_JSON_data()
-            return jsonify(result, 200)
+            result = quest(user, quest_id)
+            result["user"] = user.get_JSON_data()
+            return jsonify(result), 200
 
         except SystemExit:
             response ={
