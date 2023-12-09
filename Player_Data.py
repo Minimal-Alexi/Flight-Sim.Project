@@ -1,4 +1,4 @@
-from Database import getairport,getcoordinates,db_query
+from Database import getairport,getcoordinates,db_query,get_country_from_ident
 import json
 class Player:
     def __init__(self,database_id,location,username,CO2_Budget,Fuel,Money,Fuel_Efficiency,BoughtExtraCash,BoughtFuelTank,quests):
@@ -41,6 +41,23 @@ class Player:
                  f"FUELTANK = {int(self.BoughtFuelTank)},"
                  f"CARGOCAPACITY = {int(self.BoughtExtraCash)} "
                  f"where id = '{self.databaseID}'")
+    def Check_Quest(self,new_location):
+        country = get_country_from_ident(new_location)
+        if self.Quest[0] != False:
+            if country == self.Quest[0][3] and self.Quest[0] != False:
+                if self.Quest[0][2] < self.Quest[0][1]:
+                    self.Quest[0][2]+=1
+                if self.Quest[0][1] == self.Quest[0][2]:
+                    self.update_money(self.Quest[0][0])
+                    self.Quest[0] = False
+        if self.Quest[1] != False:
+            if country != self.Quest[1][3] and self.Quest[1] != False:
+                if self.Quest[1][2] < self.Quest[1][1]:
+                    self.Quest[1][2] += 1
+                if self.Quest[1][1] == self.Quest[1][2]:
+                    self.update_money(self.Quest[1][0])
+                    self.Quest[1] = False
+
     def drive_player(self,new_location,distance):
         self.update_fuel(self.Fuel-distance/self.Fuel_Efficiency)
         self.location = new_location
@@ -50,6 +67,7 @@ class Player:
             self.update_fuel(self.Fuel - self.Fuel)
         self.BoughtFuelTank = False
         print(f"User {self.databaseID} travelled to airport {getairport(self.location)} ({distance})")
+        self.Check_Quest(new_location)
         self.update_all()
 
     def get_Player_data(self):
