@@ -1,5 +1,5 @@
 
-def Shop(user, ItemID):
+def shop(user, ItemID):
     refuel = 100 - user.Fuel
     items = {
         1: {"name": "+5km/l Fuel Efficiency", "money_price": 1000, "CO2_price": 100},
