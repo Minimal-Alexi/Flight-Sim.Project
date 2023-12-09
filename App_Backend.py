@@ -4,7 +4,8 @@ import json
 from Authentication_Handling import UserReg,UserLogin,UserList
 from Player_Data import Player
 from GoogleMaps_API_Feeder import Local_Airport_in_Range,Intl_Airport_in_Range
-from Shop_Handling import Shop
+from Shop_Handling import shop
+from Quest_Handling import quest
 app = Flask(__name__)
 CORS(app)
 #There are a lot of printing functions in this app to ensure the console user understands how the app works.
@@ -108,14 +109,14 @@ def main():
 
 
 @app.route('/Shop', methods = ["GET","POST"])
-def shop():
+def shop_route():
     if request.is_json:
         try:
             json_request = request.get_json()
             user_ID = json_request['databaseID']
             buying_ID = json_request['itemID']
             user = user_search(user_ID)
-            Shop(user,buying_ID)
+            shop(user,buying_ID)
             result = user.get_JSON_data()
             return jsonify(result, 200)
         except SystemExit:
@@ -129,15 +130,17 @@ def shop():
 
 
 @app.route('/Quest', methods = ["GET","POST"])
-def quest():
+def quest_route():
     if request.is_json:
         try:
             json_request = request.get_json()
             user_ID = json_request['databaseID']
             quest_id = json_request['questID']
             user = user_search(user_ID)
-            result = print('Quest Started')
+            quest(user, quest_id)
+            result = user.get_JSON_data()
             return jsonify(result, 200)
+
         except SystemExit:
             response ={
                     "message": "Client error",
@@ -149,7 +152,7 @@ def quest():
 
 
 @app.route('/Help', methods = ["GET", "POST"])
-def help():
+def help_route():
     return render_template('Help.html')
 
 
