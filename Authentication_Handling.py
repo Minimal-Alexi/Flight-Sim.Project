@@ -1,18 +1,7 @@
 from Password_Management import hashing
-import mysql.connector
 from Database import (db_query)
 from Player_Data import Player
 import json
-connection = mysql.connector.connect(
-         host='127.0.0.1',
-         port= 3306,
-         database='flight_game',
-         user='flight_sim',
-         password='menudb',
-         autocommit=True
-         )
-cursor = connection.cursor()
-
 #Puts the user data into the class system for easier manipulation.~Min/Alex
 def UserLogin(name, password):
     sql = f"SELECT ID FROM GAME WHERE SCREEN_NAME = '{name}' AND PASSWORD = '{hashing(password)}'"
@@ -36,7 +25,7 @@ def UserReg(name,password):
     if len(result)==0:
         sql = f"SELECT max(id) FROM GAME"
         result = db_query(sql)
-        if cursor.rowcount == 1 and result[0] != (None,):
+        if result[0] != (None,):
             (maxi,) = result[0]
             maxi = int(maxi)
             maxi = maxi + 1
