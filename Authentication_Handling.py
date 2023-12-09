@@ -2,6 +2,7 @@ from Password_Management import hashing
 import mysql.connector
 from Database import (db_query)
 from Player_Data import Player
+import json
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -21,7 +22,8 @@ def UserLogin(name, password):
         sql = f"SELECT ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,QUEST,FUELTANK,CARGOCAPACITY FROM GAME WHERE SCREEN_NAME = '{name}'"
         result = db_query(sql)
         result = result[0]
-        user = Player(result[0],result[3],result[4],result[2],result[5],result[1],result[6],result[9],result[8],result[7])
+        quest = json.loads(result[7])
+        user = Player(result[0],result[3],result[4],result[2],result[5],result[1],result[6],result[9],result[8],quest)
         user.get_Player_data()
         return True,user
     else:
@@ -40,7 +42,9 @@ def UserReg(name,password):
             maxi = maxi + 1
         else:
             maxi = 1
-        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','[False, False]', False ,False)"
+        quest = [False,False]
+        quest = json.dumps(quest)
+        sql = f"INSERT INTO GAME (ID,MONEY,CO2_BUDGET,LOCATION,SCREEN_NAME,FUEL,FUEL_EFFICIENCY,PASSWORD,QUEST,FUELTANK,CARGOCAPACITY) VALUES ({maxi},1000,10000,'EFHK','{name}',100,10,'{hashing(password)}','{quest}', False ,False)"
         db_query(sql)
         print("Registration succesfull!")
         none,user = UserLogin(name,password)
@@ -57,4 +61,3 @@ def UserList(user,user_list):
     user_list.append(user)
     print(f"Total user count is {len(user_list)}")
     return True
-
