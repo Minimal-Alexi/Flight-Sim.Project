@@ -3,7 +3,10 @@
     --dark-green: rgb(43, 52, 37);
     --light-green: #BCCCA1;
     --light-grey: rgb(128, 128, 128);
-    --dark-grey: rgb(65, 65, 65)
+    --dark-grey: rgb(65, 65, 65);
+    --yellow: rgb(229, 217, 148);
+    --light-yellow: rgb(241, 237, 210);
+    --light-blue: rgb(128, 168, 171)
 }
 
 
@@ -16,7 +19,7 @@ button {
     border-radius: 4px;
     display: block;
     padding: 1rem;
-    background-color: rgb(203, 192, 120);
+    background-color: var(--yellow);
     color: var(--dark-green);
     text-align: center;
 }
@@ -115,7 +118,7 @@ li a {
 }
 
 li a:hover {
-    background-color: rgb(128, 168, 171);
+    background-color: var(--light-blue);
 }
 
 #map {
@@ -158,6 +161,22 @@ li a:hover {
     box-sizing: border-box;
 }
 
+.filter {
+    border-radius: 4px;
+    display: inline-flex;
+    padding: 1rem 5rem 1rem 5rem;
+    margin-left: 12rem;
+    background-color: var(--yellow);
+    font-size: 20px;
+    color: var(--dark-green);
+    text-align: center;
+    font-family: 'Graduate', Baskerville, Georgia, sans-serif;
+}
+
+.filter:hover {
+    background-color: var(--light-blue);
+}
+
 footer {
     text-align: center;
     padding: 1rem;
@@ -180,18 +199,24 @@ footer {
     display: none;
 }
 
-.done {
-    background-color: #b0b0b0;
+.continent {
+    border-radius: 4px;
+    display: inline-flex;
+    padding: 0.8rem 8rem 0.6rem 8rem;
+    margin-left: 20rem;
+    font-size: 25px;
+    text-align: center;
+    background-color: var(--yellow);
 }
 
-#weather {
-    border-spacing: 0;
-}
-
-#weather td {
-    padding: 0.3rem;
-}
-
-#weather td:first-child #weather td:nth-child(2) {
-    border-right: #b0b0b0 1px solid;
+.selector {
+    border-radius: 4px;
+    display: inline-flex;
+    padding: 0.6rem 1rem 0.5rem 1rem;
+    margin-top: 0.8rem;
+    margin-bottom: 1rem;
+    font-size: 25px;
+    text-align: center;
+    background-color: rgb(241, 237, 210);
+    font-family: 'Graduate', Baskerville, Georgia, sans-serif;
 }
