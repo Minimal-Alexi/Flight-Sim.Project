@@ -18,6 +18,7 @@ function updateUI() {
         button2.style.display = 'block';
     }
 }
+
 updateUI();
 
 function fetchquest(quest)
