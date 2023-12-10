@@ -92,6 +92,8 @@ nav {
     height: 400px;
     position: relative;
     flex-direction: column;
+    display: flex;
+    align-items: center;
 }
 
 .item-card img {
@@ -100,8 +102,10 @@ nav {
 }
 
 .item-card button {
+    display: block;
     width: 100px;
     margin-top: auto;
+    text-align: center;
 }
 
 footer {
