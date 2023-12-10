@@ -1,4 +1,33 @@
 let player_data = JSON.parse(sessionStorage.getItem('userData'))
+
+function updateUI() {
+    let quests = player_data["Quest"];
+
+    const button1 = document.getElementById('quest1');
+    const button2 = document.getElementById('quest2');
+    const button3 = document.getElementById('quest3');
+
+    if (quests.includes(1)) {
+        button1.style.display = 'none';
+    } else {
+        button1.style.display = 'block';
+    }
+
+    if (quests.includes(2)) {
+        button2.style.display = 'none';
+    } else {
+        button2.style.display = 'block';
+    }
+
+    if (quests.includes(3)) {
+        button3.style.display = 'none';
+    } else {
+        button3.style.display = 'block';
+    }
+}
+
+updateUI();
+
 function fetchquest(quest)
 {
     let Server_Request = new XMLHttpRequest();
