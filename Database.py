@@ -117,7 +117,7 @@ def get_airport_list(country, airport_type):
                     f"from airport, country "
                     f"where airport.iso_country = country.iso_country "
                     f"and country.name = '{country}' "
-                    f"and airport.type = '{airport_type}'"
+                    f"and airport.type = '{airport_type}' "
                     f"ORDER BY airport.name")
 
 def get_local_airport_list(country):
