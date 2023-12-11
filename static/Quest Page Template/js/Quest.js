@@ -43,10 +43,12 @@ function fetchquest(quest)
                     sessionStorage.setItem('userData',JSON.stringify(response['user']));
                     player_data = JSON.parse(sessionStorage.getItem('userData'))
                     console.log(JSON.parse(sessionStorage.getItem('userData')));
+                    updateUI()
                 }
                 else
                 {
                     alert(response["message"])
+                    updateUI()
                 }
             } else {
                 // Error response from the server
@@ -69,5 +71,3 @@ button3.onclick = function()
 {
     fetchquest(3);
 }
-
-let quests = player_data["Quest"]

@@ -52,6 +52,7 @@ function BuyingItems(itemID)
                     alert(response["message"])
                     sessionStorage.setItem('userData',JSON.stringify(response['user']));
                     console.log(JSON.parse(sessionStorage.getItem('userData')));
+                    RefuelPrices();
                 }
             } else {
                 // Error response from the server

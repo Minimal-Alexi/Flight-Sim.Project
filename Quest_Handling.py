@@ -54,7 +54,7 @@ def quest(user, questID):
         # updates for user quest data and adjusting co2 budget ~Ash
         response = {
                 "status": "Success",
-                "message": f"Quest : {selected_quest['name']} has successfully started. You have to travel to {selected_quest['distance']} airports.",
+                "message": f"Quest : {selected_quest['name']} has successfully started. You have to travel to {selected_quest['distance']} airports. The reward will be {selected_quest['reward']}",
             }
     user.update_all()
     return response
