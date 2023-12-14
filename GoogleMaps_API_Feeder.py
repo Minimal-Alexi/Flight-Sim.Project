@@ -13,6 +13,7 @@ connection = mysql.connector.connect(
          autocommit=True
          )
 cursor = connection.cursor()
+#These functions send over a JSON file with all the airports in range.
 def Local_Airport_in_Range(user):
     country = getcountry(user.location)
     coords = getcoordinates(user.location)
@@ -25,14 +26,14 @@ def Local_Airport_in_Range(user):
         max_distance = 0
     max_distance = (max_distance + user.Fuel)*user.Fuel_Efficiency
     for i in result:
-        if i[2] != user.location:
+        if i[1] != user.location:
             dest_coords = (i[2], i[3])
             distance_coords = distance.distance(coords, dest_coords).km
             if distance_coords <= max_distance:
                 item = {
                     "name": i[0],
                     "icao": i[1],
-                    "distance": distance_coords,
+                    "distance": int(distance_coords),
                     "latitude_deg": i[2],
                     "longitude_deg": i[3]
                 }
@@ -55,18 +56,19 @@ def Intl_Airport_in_Range(user,target_continent):
         country = i[0]
         result = get_airport_list(country,"large_airport")
         for j in result:
-            dest_coords = (j[2], j[3])
-            distance_coords = distance.distance(coords, dest_coords).km
-            if distance_coords <= max_distance:
-                item = {
-                    "name": j[0],
-                    "icao": j[1],
-                    "distance": distance_coords,
-                    "latitude_deg": j[2],
-                    "longitude_deg": j[3]
-                }
-                response[f"Airport {counter}"] = item
-                counter = counter + 1
+            if j[1] != user.location:
+                dest_coords = (j[2], j[3])
+                distance_coords = distance.distance(coords, dest_coords).km
+                if distance_coords <= max_distance:
+                    item = {
+                        "name": j[0],
+                        "icao": j[1],
+                        "distance": distance_coords,
+                        "latitude_deg": j[2],
+                        "longitude_deg": j[3]
+                    }
+                    response[f"Airport {counter}"] = item
+                    counter = counter + 1
     return response
 
 """

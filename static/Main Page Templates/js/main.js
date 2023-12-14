@@ -61,6 +61,10 @@ function initMap() {
         infoWindow.open(map, Player_Pos_Marker);
     });
 }
+function winscore()
+{
+    return parseInt(player_data['money'])+parseInt(player_data['CO2_Budget'])*1000
+}
 
 function PlayerMarkerUpdate() {
     let user_location = player_data['location_coords'];
@@ -68,6 +72,34 @@ function PlayerMarkerUpdate() {
     Player_Pos_Marker.setPosition(user_location)
     distance_circle.setMap(null);
     circle_maker()
+    if(player_data['location_icao'] == "KLAX")
+    {
+        alert("Congratulations player, you have reached the end goal!")
+        if(parseInt(player_data['CO2_Budget'])<=0)
+        {
+            alert("However, the path of smoke and destruction you've left, has forever doomed the countries you have traveled to.\n" +
+            "Your journey was inefficient and destructive, but at least the water has arrived on time.\n" +
+            "Was it worth it?\n" +
+            "Final score:" + winscore())
+        }
+        else if(parseInt(player_data['CO2_Budget'])>=100)
+        {
+            alert("You were really close to catastrophe." +
+                "But you successfully delivered water to all the poor californians, and you did it on time no less!\n" +
+                "I'm sure the Americans will accept immigrants like you, right?\n" +
+                "Uhmm...yeah, good luck flying back to Finland!\n"+
+                "Final score:" + winscore())
+        }
+        else
+        {
+            alert("Hooray, you did your best, protected the environment, and saved California.\n" +
+                "Yes...all of it.\n" +
+                "Look, the drought was really severe.\n" +
+                "Tommorrow president Boe Jiden will give you an award for protecting the planet and saving Californians\n")
+            alert("You probably should've stopped at saving just the planet but it's fine. Good job pilot :3.\n"+
+                "Final score:" + winscore())
+        }
+    }
 }
 
 //Type 1 is local, type 2 is local.
